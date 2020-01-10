@@ -30,8 +30,8 @@ library(sf)
                           atp_ymin = attractors$ymin,
                           atp_ymax = attractors$ymax)
   
-  data <- funcCleanData(data)
-  data <- wat_aggData(df = data, interval = 180)
+  data <- wat_clean_data(data)
+  data <- wat_agg_data(df = data, interval = 180)
 }
 
 # prepare for telemetry
