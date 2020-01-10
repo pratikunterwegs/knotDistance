@@ -15,7 +15,7 @@ library(sf)
 
 # load some data
 {
-  data <- fread("data/whole_season_tx_435.csv")
+  data <- fread("data/whole_season_tx_435.csv", integer64 = "numeric")
 
   data <- funcCleanData(data)
   
