@@ -15,11 +15,18 @@ library(sf)
 
 # load some data
 {
+  # read data and attractors
   data <- fread("data/whole_season_tx_435.csv", integer64 = "numeric")
-
-  data <- funcCleanData(data)
+  attractors <- fread("data/attractor_points.txt")
   
-  # setnames(data, old="ts", new="timestamp")
+  data <- wat_rmAttractor(df = data, 
+                          atp_xmin = attractors$xmin,
+                          atp_xmax = attractors$xmax,
+                          atp_ymin = attractors$ymin,
+                          atp_ymax = attractors$ymax)
+  
+  data <- funcCleanData(data)
+  data <- wat_aggData(df = data, interval = 180)
 }
 
 # prepare for telemetry
@@ -44,6 +51,9 @@ library(sf)
 {
   data.tel <- as.telemetry(test)
   
+  outliers <- outlie(data.tel)
+  data.tel <- data.tel[-(which(outliers[[1]] >= 0.6)),]
+  
   # make variogram
   vg <- variogram(data.tel)
   variogram.fit(vg)
@@ -56,4 +66,8 @@ library(sf)
 
 # plot to check
 plot(vg, CTMM = mod)
-  
+
+# get speeds
+data_speed <- speeds(data.tel, mod)
+
+hist(data_speed$est)
