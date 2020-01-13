@@ -8,4 +8,4 @@
 pwd
 module load R/3.6.1-foss-2018a
 module list
-Rscript code_tryCtmm.r
+Rscript code_doCtmm.r
