@@ -9,13 +9,13 @@ pwd
 module load R/3.6.1-foss-2018a
 ml list
 
-sbatch code/job1.sh
-sbatch code/job2.sh
-sbatch code/job3.sh
-sbatch code/job4.sh
-sbatch code/job5.sh
-sbatch code/job6.sh
-sbatch code/job7.sh
-sbatch code/job8.sh
-sbatch code/job9.sh
-sbatch code/job10.sh
+sbatch code/job_001.sh
+sbatch code/job_002.sh
+sbatch code/job_003.sh
+sbatch code/job_004.sh
+sbatch code/job_005.sh
+sbatch code/job_006.sh
+sbatch code/job_007.sh
+sbatch code/job_008.sh
+sbatch code/job_009.sh
+sbatch code/job_010.sh
