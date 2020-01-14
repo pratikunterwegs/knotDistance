@@ -44,7 +44,7 @@ do_ctmm <- function(datafile){
     
     # clean data and aggregate
     data <- wat_clean_data(data)
-    data <- wat_agg_data(df = data, interval = 60)
+    # data <- wat_agg_data(df = data, interval = 60)
   }
   
   # prepare for telemetry

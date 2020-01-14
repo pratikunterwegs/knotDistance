@@ -1,9 +1,9 @@
 #! /bin/bash
 #SBATCH --job-name=try_ctmm
-#SBATCH --time=00:01:00
+#SBATCH --time=01:00:00
 #SBATCH --cpus-per-task=1
-#SBATCH --mem=1000
-#SBATCH --partition=short
+#SBATCH --mem=9000
+#SBATCH --partition=regular
 
 pwd
 module load R/3.6.1-foss-2018a
