@@ -13,14 +13,27 @@ library(watlasUtils)
 library(lubridate)
 library(sf)
 library(glue)
+library(stringr)
 
 do_ctmm <- function(datafile){
   
   # load some data
   {
-    # read data and attractors
+    reldate <- fread("data/release_data_2018.csv")
+    reldate[,Release_Date:=fastPOSIXct(Release_Date)]
+    
+    # read data and filter after release + 24 hrs
     data <- fread(datafile, integer64 = "numeric")
     
+    id_data <- unique(data$TAG)
+    id_data <- str_sub(id, -3, -1)
+    
+    id_rel <- reldate[id == id_data, Release_Date]
+    id_rel <- as.numeric(id_rel)
+    
+    data <- data[TIME/1e3 > as.numeric(id_rel + (24*60*60)),]
+    
+    # remove attractors
     attractors <- fread("data/attractor_points.txt")
     
     data <- wat_rm_attractor(df = data, 
@@ -29,8 +42,8 @@ do_ctmm <- function(datafile){
                              atp_ymin = attractors$ymin,
                              atp_ymax = attractors$ymax)
     
+    # clean data and aggregate
     data <- wat_clean_data(data)
-    id <- unique(data$id)
     data <- wat_agg_data(df = data, interval = 60)
   }
   
