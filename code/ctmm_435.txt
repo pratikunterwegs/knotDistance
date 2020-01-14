@@ -1,0 +1,11 @@
+$name
+[1] "IID anisotropic"
+
+$DOF
+    mean     area    speed 
+25950.00 16012.33     0.00 
+
+$CI
+                              low      est     high
+area (square kilometers) 33.01652 33.53394 34.05532
+
