@@ -24,9 +24,9 @@ do_ctmm <- function(datafile){
     
     # read data and filter after release + 24 hrs
     data <- fread(datafile, integer64 = "numeric")
-    
-    id_data <- unique(data$TAG)
-    id_data <- str_sub(id, -3, -1)
+
+    id_data <- as.character(unique(data$TAG))
+    id_data <- str_sub(id_data, -3, -1)
     
     id_rel <- reldate[id == id_data, Release_Date]
     id_rel <- as.numeric(id_rel)
@@ -74,7 +74,7 @@ do_ctmm <- function(datafile){
   # ctmm
   {
     outliers <- outlie(tel)
-    q90 <- quantile(outliers[[1]], probs = c(0.9))
+    q90 <- quantile(outliers[[1]], probs = c(0.99))
     
     tel <- tel[-(which(outliers[[1]] >= q90)),]
     
@@ -84,9 +84,13 @@ do_ctmm <- function(datafile){
     mod <- ctmm.fit(tel)
   }
   
+  message("model fit!")
+  
+  summary(mod)
+  
   # check output
   {
-    png(glue('vg_ctmm_{id}.png'))
+    png(filename = as.character(glue('vg_ctmm_{id_data}.png')))
     plot(vg, CTMM=mod)
     dev.off()
   }
@@ -97,7 +101,8 @@ do_ctmm <- function(datafile){
     {
       dir.create("mod_output")
     }
-    writeLines(summary(mod), con=glue('ctmm_out_{id}.txt'))
+    writeLines(R.utils::captureOutput(summary(mod)), 
+            con = as.character(glue('mod_output/ctmm_{id_data}.txt')))
   }
   
 }
