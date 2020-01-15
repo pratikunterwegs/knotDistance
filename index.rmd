@@ -21,6 +21,8 @@ This is the `bookdown` version of a project in preparation that links high-resol
 
 Please contact the following before cloning or in case of interest in the project.
 
+- Selin Ersoy (lead author)
+
 - Pratik Gupte (author and maintainer)
   - [PhD student, GELIFES -- University of Groningen](https://www.rug.nl/staff/p.r.gupte)
   - Guest researcher, COS -- NIOZ
@@ -29,8 +31,6 @@ Please contact the following before cloning or in case of interest in the projec
 
 - Allert Bijleveld (PI): allert.bijleveld@nioz.nl
   - Project information: https://www.nioz.nl/en/about/cos/coastal-movement-ecology/shorebird-tracking
-
-- Selin Ersoy (collab): selin.ersoy@nioz.nl
 
 ## Data access
 
