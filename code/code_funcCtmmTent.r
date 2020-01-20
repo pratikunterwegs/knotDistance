@@ -11,8 +11,9 @@ library(lubridate)
 library(glue)
 library(stringr)
 library(scales)
+library(readr)
 
-do_ctmm <- function(datafile){
+do_ctmm_tent <- function(datafile){
   
   # load some data
   {
