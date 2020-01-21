@@ -63,12 +63,15 @@ do_ctmm_tent <- function(datafile){
   
   # check output
   {
-    png(filename = as.character(glue('output/figs/vg_ctmm_{ring}.png')))
+    png(filename = as.character(glue('output/figs/vg_ctmm_{ring}.png')),
+      height = 1600, width = 1600)
     {
-      par(mfrow=c(2,3))
+      par(mfrow=c(2,6))
       for(i in 1:length(mods)){
         modtype = summary(mods[[i]])$name
         plot(vg, CTMM=mods[[i]], main = as.character(glue('{ring}: {modtype}')))
+        plot(vg, CTMM=mods[[i]], fraction=0.005, 
+          main = as.character(glue('{ring}: {modtype}')))
       }
     }
     dev.off()
