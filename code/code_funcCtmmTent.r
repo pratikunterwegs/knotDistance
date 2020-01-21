@@ -67,11 +67,10 @@ do_ctmm_tent <- function(datafile){
     {
       par(mfrow=c(2,3))
       for(i in 1:length(mods)){
-        plot(vg, CTMM=mods[[i]], main = summary(mods[[i]])$name)
+        modtype = summary(mods[[i]])$name
+        plot(vg, CTMM=mods[[i]], main = as.character(glue('{ring}: {modtype}')))
       }
     }
-    plot(vg, CTMM=mods[[1]], main = summary(mods[[1]])$name)
-    plot(vg, CTMM=mods[[2]], col = "green", add = T)
     dev.off()
   }
   
