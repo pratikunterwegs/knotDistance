@@ -80,7 +80,7 @@ do_ctmm_tent <- function(datafile){
     {
       dir.create("mod_output")
     }
-    writeLines(R.utils::captureOutput(summary(mod)), 
+    writeLines(R.utils::captureOutput(summary(mods)), 
                con = as.character(glue('mod_output/ctmm_tent_{ring}.txt')))
     # save the models
     save(mods, file = as.character(glue('mod_output/ctmm_tent_{ring}.rdata')))
