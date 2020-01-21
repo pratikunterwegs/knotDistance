@@ -64,7 +64,7 @@ do_ctmm_tent <- function(datafile){
   # check output
   {
     png(filename = as.character(glue('output/figs/vg_ctmm_{ring}.png')),
-      height = 1600, width = 1600)
+      height = 800, width = 1600)
     {
       par(mfrow=c(2,6))
       for(i in 1:length(mods)){

@@ -11,7 +11,7 @@ password = read_csv("data/password.txt")$password
 
 # read in data names
 data_files <- list.files("data/tent/", pattern = "F01_2018",
-                         full.names = TRUE)[1:3]
+                         full.names = TRUE)
 # get bird ids
 data_ids <- str_extract(data_files, "(Z\\w+)")
 
