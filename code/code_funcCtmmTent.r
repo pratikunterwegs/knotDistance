@@ -38,31 +38,40 @@ do_ctmm_tent <- function(datafile){
   
   # make telemetry after converting to data.frame
   {
+    # projection system def
+    prj <- "+proj=tmerc +ellps=WGS84 +datum=WGS84 +units=m +no_defs +lon_0=0 +x_0=0 +y_0=0 +k_0=0.000009996"
     tel <- as.telemetry(as.data.frame(data),
+                        projection = prj,
                         timeformat = "%Y-%m-%d %H:%M:%S")
   }
   
   # ctmm
   {
     outliers <- outlie(tel)
-    q90 <- quantile(outliers[[1]], probs = c(0.99))
-    
-    tel <- tel[-(which(outliers[[1]] >= q90)),]
-    
-    # make variogram
     vg <- variogram(tel)
+    # guess model paramters
+    guess <- ctmm.guess(tel, interactive = FALSE)
     
-    mod <- ctmm.fit(tel)
+    # fit the range-restricted models
+    mods <- ctmm.select(tel, CTMM = guess, verbose = TRUE)
+    
   }
   
   message("model fit!")
   
-  summary(mod)
+  print(summary(mods))
   
   # check output
   {
     png(filename = as.character(glue('vg_ctmm_{ring}.png')))
-    plot(vg, CTMM=mod)
+    {
+      par(mfrow=c(2,3))
+      for(i in 1:length(mods)){
+        plot(vg, CTMM=mods[[i]], main = summary(mods[[i]])$name)
+      }
+    }
+    plot(vg, CTMM=mods[[1]], main = summary(mods[[1]])$name)
+    plot(vg, CTMM=mods[[2]], col = "green", add = T)
     dev.off()
   }
   
