@@ -63,7 +63,7 @@ do_ctmm_tent <- function(datafile){
   
   # check output
   {
-    png(filename = as.character(glue('vg_ctmm_{ring}.png')))
+    png(filename = as.character(glue('output/figs/vg_ctmm_{ring}.png')))
     {
       par(mfrow=c(2,3))
       for(i in 1:length(mods)){
@@ -81,9 +81,9 @@ do_ctmm_tent <- function(datafile){
       dir.create("mod_output")
     }
     writeLines(R.utils::captureOutput(summary(mods)), 
-               con = as.character(glue('mod_output/ctmm_tent_{ring}.txt')))
+               con = as.character(glue('output/mods/ctmm_tent_{ring}.txt')))
     # save the models
-    save(mods, file = as.character(glue('mod_output/ctmm_tent_{ring}.rdata')))
+    save(mods, file = as.character(glue('output/mods/ctmm_tent_{ring}.rdata')))
   }
   
 }
