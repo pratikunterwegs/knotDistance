@@ -1,0 +1,5 @@
+                    ΔAICc ΔRMSPE (cm)  DOF[area]
+OUF anisotropic    0.0000    76.41604   1.512943
+OUF isotropic    431.2470    52.59860   1.782754
+OU anisotropic   548.8456    99.74238   1.275805
+OUf anisotropic 2038.7201     0.00000 215.768942

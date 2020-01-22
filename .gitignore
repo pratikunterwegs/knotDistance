@@ -42,5 +42,5 @@ vignettes/*.pdf
 # exclude data
 data/*
 private/*
-jobs/*.sh
+jobs/
 figs/*.rdata
