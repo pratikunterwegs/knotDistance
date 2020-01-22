@@ -4,6 +4,7 @@
 
 # Session Data files
 .RData
+*.rdata
 
 # User-specific files
 .Ruserdata
@@ -41,3 +42,5 @@ vignettes/*.pdf
 # exclude data
 data/*
 private/*
+jobs/*.sh
+figs/*.rdata
