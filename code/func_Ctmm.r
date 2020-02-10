@@ -78,10 +78,10 @@ do_ctmm <- function(datafile){
     
     tel <- tel[-(which(outliers[[1]] >= q90)),]
     
-    # make variogram
-    vg <- variogram(tel)
+    guess <- ctmm.guess(tel, interactive = FALSE)
     
-    mod <- ctmm.fit(tel)
+    # fit the range-restricted models
+    mods <- ctmm.select(tel, CTMM = guess, verbose = TRUE)
   }
   
   message("model fit!")
@@ -103,6 +103,8 @@ do_ctmm <- function(datafile){
     }
     writeLines(R.utils::captureOutput(summary(mod)), 
             con = as.character(glue('mod_output/ctmm_{id_data}.txt')))
+    # save the models
+    save(mods, file = as.character(glue('output/mods/ctmm_tent_{ring}.rdata')))
   }
   
 }
