@@ -99,10 +99,11 @@ do_ctmm <- function(datafile){
                 {this_tel_obj[-(which(this_outlier_set[[1]] >= outlier_quantile)),]})
     
     # some tides may have no data remaining, filter them out
-    tel <- keep(tel, function(this_tel){nrow(this_tel) > 0})
+    # CTMM has issues with data that has only one row
+    tel <- keep(tel, function(this_tel){nrow(this_tel) > 10})
     
     # guess ctmm params
-    guess_list <- map(tel, ctmm.guess, interactive = F)
+    guess_list <- lapply(tel, ctmm.guess, interactive = F)
     
     # run ctmm fit
     mod <- map2(tel, guess_list, function(obj_tel, obj_guess){
