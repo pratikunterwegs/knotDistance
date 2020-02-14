@@ -24,7 +24,7 @@ do_ctmm <- function(datafile){
     
     # read data and filter after release + 24 hrs
     data <- fread(datafile, integer64 = "numeric")
-
+    
     id_data <- as.character(unique(data$TAG))
     id_data <- str_sub(id_data, -3, -1)
     
@@ -113,14 +113,23 @@ do_ctmm <- function(datafile){
   
   message("model fit!")
   
-  summary(mod)
+  # check model fit
+  {
+    png(filename = as.character(glue('output/figs/vg_ctmm_{id_data}.png')),
+        height = 800, width = 1600)
+    {
+      par(mfrow=c(10, ceiling(length(mods)/ 10)))
+      for(i in 1:length(mods))
+      {
+        modtype = summary(mods[[i]])$name
+        plot(variogram(tel[[i]]), CTMM=mods[[i]], 
+             main = as.character(glue('{id_data}: {modtype}')))
+      }
+    }
+    dev.off()
+  }
   
-  # check output
-  # {
-  #   png(filename = as.character(glue('vg_ctmm_{id_data}.png')))
-  #   plot(vg, CTMM=mod)
-  #   dev.off()
-  # }
+  # get speed output
   
   # print model
   {
@@ -129,7 +138,7 @@ do_ctmm <- function(datafile){
       dir.create("mod_output")
     }
     writeLines(R.utils::captureOutput(map(mod, summary)), 
-            con = as.character(glue('mod_output/ctmm_{id_data}.txt')))
+               con = as.character(glue('mod_output/ctmm_{id_data}.txt')))
     # save the models
     save(mod, file = as.character(glue('output/mods/ctmm_{id_data}.rdata')))
   }

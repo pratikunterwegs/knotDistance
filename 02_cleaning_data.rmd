@@ -64,7 +64,7 @@ tag_info[,Release_Date := as.POSIXct(paste(Release_Date, Release_Time, sep = " "
                                      format = "%d.%m.%y %H:%M", tz = "CET")]
 
 # sub for knots in data
-data_files <- data_files[as.integer(data_ids) %in% tag_info$Toa_Tag]
+data_files <- data_files[as.integer(data_ids) %in% tag_info$Toa_Tag][1]
 
 # add tide data
 tides_2018 <- "data/tidesSummer2018.csv"
