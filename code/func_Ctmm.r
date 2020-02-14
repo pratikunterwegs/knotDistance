@@ -81,7 +81,7 @@ do_ctmm <- function(datafile){
   
   # make telemetry
   {
-    tel <- as.telemetry(test)
+    tel <- as.telemetry(data_for_ctmm)
   }
   
   # ctmm section
