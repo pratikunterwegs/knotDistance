@@ -17,7 +17,7 @@ library(stringr)
 
 do_ctmm <- function(datafile){
   
-  # load some data
+  # load raw data
   {
     reldate <- fread("data/release_data_2018.csv")
     reldate[,Release_Date:=fastPOSIXct(Release_Date)]
@@ -31,39 +31,52 @@ do_ctmm <- function(datafile){
     id_rel <- reldate[id == id_data, Release_Date]
     id_rel <- as.numeric(id_rel)
     
+    # filter out the first 24 hours since release
     data <- data[TIME/1e3 > as.numeric(id_rel + (24*60*60)),]
     
     # remove attractors
     attractors <- fread("data/attractor_points.txt")
-    
     data <- wat_rm_attractor(df = data, 
                              atp_xmin = attractors$xmin,
                              atp_xmax = attractors$xmax,
                              atp_ymin = attractors$ymin,
                              atp_ymax = attractors$ymax)
     
-    # clean data and aggregate
+    # clean data with median filter
     data <- wat_clean_data(data)
-    # data <- wat_agg_data(df = data, interval = 60)
+    
+    # add tide data
+    data <- wat_add_tide(df = data,
+                         tide_data = "data/tidesSummer2018.csv")
   }
   
   # prepare for telemetry
   {
-    test <- data
-    # convert to lat-long
-    coords <- test %>% 
-      st_as_sf(coords = c("x", "y")) %>% 
-      `st_crs<-`(32631) %>% 
-      st_transform(4326) %>% 
-      st_coordinates()
+    data_for_ctmm <- setDT(data)[,.(id, tide_number, x, y, time, VARX, VARY)]
     
-    names(coords) <- c("location.long","location.lat")
+    # aggregate within a patch to 10 seconds
+    data_for_ctmm <- split(data_for_ctmm, f = data_for_ctmm$tide_number) %>% 
+      map(wat_agg_data, interval = 30) %>% 
+      bind_rows()
     
-    test[,HDOP:=sqrt(VARX+VARY)]
-    test <- test[,.(id, ts, HDOP)]
-    test[,ts:=fastPOSIXct(ts)]
-    setnames(test, c("individual.local.identifier", "timestamp", "HDOP"))
-    test[,`:=`(location.long = coords[,1], location.lat = coords[,2])]
+    # make each tidal cycle an indiv
+    setDT(data_for_ctmm)
+    data_for_ctmm[,individual.local.identifier:= paste(id, tide_number,
+                                                       sep = "_")]
+    # get horizontal error
+    data_for_ctmm[,HDOP := sqrt(VARX+VARY)/10]
+    # subset columns
+    data_for_ctmm <- data_for_ctmm[,.(individual.local.identifier, time, x, y, HDOP)]
+    
+    # get new names
+    setnames(data_for_ctmm, old = c("x", "y", "time"), 
+             new = c("UTM.x","UTM.y", "timestamp"))
+    
+    # convert time to posixct
+    data_for_ctmm[,timestamp:=as.POSIXct(timestamp, origin = "1970-01-01")]
+    # add UTM zone
+    data_for_ctmm[,zone:="31 +north"]
+    
   }
   
   # make telemetry
@@ -71,17 +84,30 @@ do_ctmm <- function(datafile){
     tel <- as.telemetry(test)
   }
   
-  # ctmm
+  # ctmm section
   {
-    outliers <- outlie(tel)
-    q90 <- quantile(outliers[[1]], probs = c(0.99))
+    # get the outliers but do not plot
+    outliers <- map(tel, outlie, plot=FALSE)
+    # get a list of 99 th percentile outliers
+    q90 <- map(outliers, function(this_outlier_set){
+      quantile(this_outlier_set[[1]], probs = c(0.99))
+    })
     
-    tel <- tel[-(which(outliers[[1]] >= q90)),]
+    # remove outliers from telemetry data
+    tel <- pmap(list(tel, outliers, q90), 
+                function(this_tel_obj, this_outlier_set, outlier_quantile) 
+                {this_tel_obj[-(which(this_outlier_set[[1]] >= outlier_quantile)),]})
     
-    guess <- ctmm.guess(tel, interactive = FALSE)
+    # some tides may have no data remaining, filter them out
+    tel <- keep(tel, function(this_tel){nrow(this_tel) > 0})
     
-    # fit the range-restricted models
-    mods <- ctmm.select(tel, CTMM = guess, verbose = TRUE)
+    # guess ctmm params
+    guess_list <- map(tel, ctmm.guess, interactive = F)
+    
+    # run ctmm fit
+    mod <- map2(tel, guess_list, function(obj_tel, obj_guess){
+      ctmm.fit(obj_tel, CTMM = obj_guess)
+    })
   }
   
   message("model fit!")
@@ -89,11 +115,11 @@ do_ctmm <- function(datafile){
   summary(mod)
   
   # check output
-  {
-    png(filename = as.character(glue('vg_ctmm_{id_data}.png')))
-    plot(vg, CTMM=mod)
-    dev.off()
-  }
+  # {
+  #   png(filename = as.character(glue('vg_ctmm_{id_data}.png')))
+  #   plot(vg, CTMM=mod)
+  #   dev.off()
+  # }
   
   # print model
   {
@@ -101,10 +127,10 @@ do_ctmm <- function(datafile){
     {
       dir.create("mod_output")
     }
-    writeLines(R.utils::captureOutput(summary(mod)), 
+    writeLines(R.utils::captureOutput(map(mod, summary)), 
             con = as.character(glue('mod_output/ctmm_{id_data}.txt')))
     # save the models
-    save(mods, file = as.character(glue('output/mods/ctmm_tent_{ring}.rdata')))
+    save(mod, file = as.character(glue('output/mods/ctmm_{id_data}.rdata')))
   }
   
 }
