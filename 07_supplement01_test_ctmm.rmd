@@ -64,7 +64,7 @@ data_ids <- str_extract(data_files, "(tx_\\d+)") %>% str_sub(-3,-1)
 ```{r choose_agg_scale, eval=FALSE}
 scales <- c(15, 30, 60)
 
-data_to_test <- crossing(scales, data_files)
+data_to_test <- crossing(scales, nesting(data_files, data_ids))
 rm(scales, data_files)
 ```
 
@@ -76,6 +76,7 @@ for(i in 1:nrow(data_to_test)){
 
   scale <- data_to_test$scales[i]
   file <- data_to_test$data_files[i]
+  id <- data_to_test$data_ids[i]
   # connect to peregrine
   s <- ssh_connect("p284074@peregrine.hpc.rug.nl", passwd = password)
   # make directory if non-existent
@@ -105,7 +106,7 @@ for(i in 1:nrow(data_to_test)){
     shebang[2] <- glue('#SBATCH --job-name=ctmm_{file}')
     
     text <- glue('Rscript code/code_test_ctmm_scale.r {file} {scale}')
-    jobfile <- glue('code/job_ctmm_{file}_{scale}.sh')
+    jobfile <- glue('code/job_ctmm_{id}_{scale}.sh')
     
     writeLines(c(shebang, text), con = jobfile)
     scp_upload(s, jobfile, to = "code/")
