@@ -72,8 +72,10 @@ rm(scales, data_files)
 # read password
 password = fread("data/password.txt")$password
 
-pmap(data_to_test, function(scales, data_files){
+for(i in 1:nrow(data_to_test)){
 
+  scale <- data_to_test$scales[i]
+  file <- data_to_test$data_files[i]
   # connect to peregrine
   s <- ssh_connect("p284074@peregrine.hpc.rug.nl", passwd = password)
   # make directory if non-existent
@@ -86,13 +88,13 @@ pmap(data_to_test, function(scales, data_files){
     unlist()
   
   # check name
-  data_name <- data_files %>% 
+  data_name <- file %>% 
     str_split("/") %>% 
     unlist() %>% .[3]
   
   if(!data_name %in% files_on_prg){
     # upload data file for processing
-    scp_upload(s, data_files, to = "data/watlas/")
+    scp_upload(s, file, to = "data/watlas/")
   }
   
   # make job file
@@ -100,10 +102,10 @@ pmap(data_to_test, function(scales, data_files){
     shebang <- readLines("code/template_job.sh")
     
     # rename job
-    shebang[2] <- glue('#SBATCH --job-name=ctmm_{data_files}')
+    shebang[2] <- glue('#SBATCH --job-name=ctmm_{file}')
     
-    text <- glue('Rscript code/code_test_ctmm_scale.r {data_files} {scales} ')
-    jobfile <- glue('code/job_ctmm_{data_files}_{scales}.sh')
+    text <- glue('Rscript code/code_test_ctmm_scale.r {file} {scale}')
+    jobfile <- glue('code/job_ctmm_{file}_{scale}.sh')
     
     writeLines(c(shebang, text), con = jobfile)
     scp_upload(s, jobfile, to = "code/")
