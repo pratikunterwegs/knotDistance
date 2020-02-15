@@ -29,6 +29,9 @@ library(ctmm)
 # plot libs
 library(ggplot2)
 library(ggthemes)
+
+# ssh func
+library(ssh)
 ```
 
 ## Load prelim data
@@ -100,7 +103,7 @@ pmap(data_to_test, function(scales, data_files){
     shebang[2] <- glue('#SBATCH --job-name=ctmm_{data_files}')
     
     text <- glue('Rscript code/code_doCtmm.r {data_files} {scales} ')
-    jobfile <- glue('code/job_ctmm_{data_ids[i]}.sh')
+    jobfile <- glue('code/job_ctmm_{data_files}_{scales}.sh')
     
     writeLines(c(shebang, text), con = jobfile)
     scp_upload(s, jobfile, to = "code/")
