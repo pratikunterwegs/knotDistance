@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 2 CTMM on WATLAS data using a computing cluster | Linking experimental measures of personality to free-living movement</title>
+  <meta name="description" content="Section 2 CTMM on WATLAS data using a computing cluster | Linking experimental measures of personality to free-living movement" />
+  <meta name="generator" content="bookdown 0.16 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 2 CTMM on WATLAS data using a computing cluster | Linking experimental measures of personality to free-living movement" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Section 2 CTMM on WATLAS data using a computing cluster | Linking experimental measures of personality to free-living movement" />
+  <meta name="github-repo" content="pratikunterwegs/knotDistance" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 2 CTMM on WATLAS data using a computing cluster | Linking experimental measures of personality to free-living movement" />
+  
+  <meta name="twitter:description" content="Section 2 CTMM on WATLAS data using a computing cluster | Linking experimental measures of personality to free-living movement" />
+  
+
+<meta name="author" content="Pratik R Gupte" />
+
+
+<meta name="date" content="2020-02-15" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="applying-ctmm-to-watlas-data.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#attribution"><i class="fa fa-check"></i><b>1.1</b> Attribution</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.2</b> Data access</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#data-processing"><i class="fa fa-check"></i><b>1.3</b> Data processing</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html"><i class="fa fa-check"></i><b>2</b> CTMM on WATLAS data using a computing cluster</a><ul>
+<li class="chapter" data-level="2.1" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#prepare-watlasutils-and-other-libraries"><i class="fa fa-check"></i><b>2.1</b> Prepare <code>watlasUtils</code> and other libraries</a></li>
+<li class="chapter" data-level="2.2" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#prepare-to-remove-attractor-points-clean-data-and-add-tides"><i class="fa fa-check"></i><b>2.2</b> Prepare to remove attractor points, clean data and add tides</a></li>
+<li class="chapter" data-level="2.3" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#read-clean-and-write-data"><i class="fa fa-check"></i><b>2.3</b> Read, clean, and write data</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html"><i class="fa fa-check"></i><b>3</b> Applying CTMM to WATLAS data</a><ul>
+<li class="chapter" data-level="3.1" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#load-libraries"><i class="fa fa-check"></i><b>3.1</b> Load libraries</a></li>
+<li class="chapter" data-level="3.2" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#load-prelim-data"><i class="fa fa-check"></i><b>3.2</b> Load prelim data</a></li>
+<li class="chapter" data-level="3.3" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#choose-scales-of-aggregation"><i class="fa fa-check"></i><b>3.3</b> Choose scales of aggregation</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Linking experimental measures of personality to free-living movement</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ctmm-on-watlas-data-using-a-computing-cluster" class="section level1">
+<h1><span class="header-section-number">Section 2</span> CTMM on WATLAS data using a computing cluster</h1>
+<p>This section is about running CTMM <span class="citation">(<span class="citeproc-not-found" data-reference-id="calabrese2016"><strong>???</strong></span>)</span> on individual level movement data to calculate mean speeds and total distance travelled.
+CTMM is a time intensive process taking <em>n log(n)</em> seconds for <em>n</em> positions (pers. comm. Mike Noonan).
+We circumvent the obvious time cost by sending each individual’s track to the RUG computing cluster for processing.</p>
+<p>Methodologically, we read in raw, unprocessed data, remove so-called attractor points, and then clean the data by applying a 5-fix median filter.
+We identify tidal cycles using data from Rijkswaterstaat, and split movement tracks into subsets lasting from one high tide to the next.
+Treating these subsets as individual replicates in a population, as recommended <span class="citation">(<span class="citeproc-not-found" data-reference-id="calabrese2016"><strong>???</strong></span>)</span>, we guess CTMM parameters and fit CTMM to each tidal cycle.
+Finally, we output the fitted models and their summaries as <code>.Rdata</code> and text files, respectively.</p>
+<p>Much of the preliminary processing also happens on the cluster, and uses the the <a href="https://github.com/pratikunterwegs/watlasUtils">WATLAS Utilities package</a>.</p>
+<p><strong>Workflow</strong></p>
+<ol style="list-style-type: decimal">
+<li>Prepare required libraries.</li>
+<li>Read in data, apply the cleaning function, and overwrite local data.</li>
+</ol>
+<div id="prepare-watlasutils-and-other-libraries" class="section level2">
+<h2><span class="header-section-number">2.1</span> Prepare <code>watlasUtils</code> and other libraries</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># watlasUtils assumed installed from the previous step</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="co"># if not, install from the github repo as shown below</span></a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;pratikunterwegs/watlasUtils&quot;</span>, <span class="dt">ref=</span><span class="st">&quot;devbranch&quot;</span>)</a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="kw">library</span>(watlasUtils)</a>
+<a class="sourceLine" id="cb1-6" title="6"></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="co"># libraries to process data</span></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="kw">library</span>(data.table)</a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="kw">library</span>(purrr)</a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="kw">library</span>(glue)</a>
+<a class="sourceLine" id="cb1-11" title="11"><span class="kw">library</span>(fasttime)</a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="kw">library</span>(bit64)</a>
+<a class="sourceLine" id="cb1-13" title="13"><span class="kw">library</span>(stringr)</a>
+<a class="sourceLine" id="cb1-14" title="14"></a>
+<a class="sourceLine" id="cb1-15" title="15"><span class="co"># libraries for the cluster</span></a>
+<a class="sourceLine" id="cb1-16" title="16"><span class="kw">library</span>(ssh)</a></code></pre></div>
+</div>
+<div id="prepare-to-remove-attractor-points-clean-data-and-add-tides" class="section level2">
+<h2><span class="header-section-number">2.2</span> Prepare to remove attractor points, clean data and add tides</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># read in identified attractor points</span></a>
+<a class="sourceLine" id="cb2-2" title="2">atp &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/attractor_points.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb2-3" title="3"></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="co"># make a list of data files to read</span></a>
+<a class="sourceLine" id="cb2-5" title="5">data_files &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">path =</span> <span class="st">&quot;data/watlas/&quot;</span>, <span class="dt">pattern =</span> <span class="st">&quot;whole_season*&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb2-6" title="6"></a>
+<a class="sourceLine" id="cb2-7" title="7">data_ids &lt;-<span class="st"> </span><span class="kw">str_extract</span>(data_files, <span class="st">&quot;(tx_</span><span class="ch">\\</span><span class="st">d+)&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_sub</span>(<span class="op">-</span><span class="dv">3</span>,<span class="op">-</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb2-8" title="8"></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="co"># read deployment data from local file in data folder</span></a>
+<a class="sourceLine" id="cb2-10" title="10">tag_info &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/SelinDB.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb2-11" title="11"></a>
+<a class="sourceLine" id="cb2-12" title="12"><span class="co"># filter out NAs in release date and time</span></a>
+<a class="sourceLine" id="cb2-13" title="13">tag_info &lt;-<span class="st"> </span>tag_info[<span class="op">!</span><span class="kw">is.na</span>(Release_Date) <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(Release_Time),]</a>
+<a class="sourceLine" id="cb2-14" title="14"></a>
+<a class="sourceLine" id="cb2-15" title="15"><span class="co"># make release date column as POSIXct</span></a>
+<a class="sourceLine" id="cb2-16" title="16">tag_info[,Release_Date <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">as.POSIXct</span>(<span class="kw">paste</span>(Release_Date, Release_Time, <span class="dt">sep =</span> <span class="st">&quot; &quot;</span>), </a>
+<a class="sourceLine" id="cb2-17" title="17">                                     <span class="dt">format =</span> <span class="st">&quot;%d.%m.%y %H:%M&quot;</span>, <span class="dt">tz =</span> <span class="st">&quot;CET&quot;</span>)]</a>
+<a class="sourceLine" id="cb2-18" title="18"></a>
+<a class="sourceLine" id="cb2-19" title="19"><span class="co"># sub for knots in data</span></a>
+<a class="sourceLine" id="cb2-20" title="20">data_files &lt;-<span class="st"> </span>data_files[<span class="kw">as.integer</span>(data_ids) <span class="op">%in%</span><span class="st"> </span>tag_info<span class="op">$</span>Toa_Tag][<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb2-21" title="21"></a>
+<a class="sourceLine" id="cb2-22" title="22"><span class="co"># add tide data</span></a>
+<a class="sourceLine" id="cb2-23" title="23">tides_<span class="dv">2018</span> &lt;-<span class="st"> &quot;data/tidesSummer2018.csv&quot;</span></a></code></pre></div>
+</div>
+<div id="read-clean-and-write-data" class="section level2">
+<h2><span class="header-section-number">2.3</span> Read, clean, and write data</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># read password</span></a>
+<a class="sourceLine" id="cb3-2" title="2">password =<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/password.txt&quot;</span>)<span class="op">$</span>password</a>
+<a class="sourceLine" id="cb3-3" title="3"></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="co"># transfer files and process using ctmm</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(data_files)){</a>
+<a class="sourceLine" id="cb3-6" title="6">  <span class="co"># connect to peregrine</span></a>
+<a class="sourceLine" id="cb3-7" title="7">  s &lt;-<span class="st"> </span><span class="kw">ssh_connect</span>(<span class="st">&quot;p284074@peregrine.hpc.rug.nl&quot;</span>, <span class="dt">passwd =</span> password)</a>
+<a class="sourceLine" id="cb3-8" title="8">  <span class="co"># make directory if non-existent</span></a>
+<a class="sourceLine" id="cb3-9" title="9">  <span class="kw">ssh_exec_wait</span>(s, <span class="dt">command =</span> <span class="st">&quot;mkdir -p data/watlas&quot;</span>)</a>
+<a class="sourceLine" id="cb3-10" title="10">  </a>
+<a class="sourceLine" id="cb3-11" title="11">  <span class="co"># list files already present</span></a>
+<a class="sourceLine" id="cb3-12" title="12">  files_on_prg &lt;-<span class="st"> </span><span class="kw">ssh_exec_internal</span>(s, <span class="dt">command =</span> <span class="st">&quot;ls data/watlas&quot;</span>)</a>
+<a class="sourceLine" id="cb3-13" title="13">  files_on_prg &lt;-<span class="st"> </span><span class="kw">rawToChar</span>(files_on_prg<span class="op">$</span>stdout) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-14" title="14"><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-15" title="15"><span class="st">    </span><span class="kw">unlist</span>()</a>
+<a class="sourceLine" id="cb3-16" title="16">  </a>
+<a class="sourceLine" id="cb3-17" title="17">  <span class="co"># check name</span></a>
+<a class="sourceLine" id="cb3-18" title="18">  data_name &lt;-<span class="st"> </span>data_files[i] <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-19" title="19"><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;/&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-20" title="20"><span class="st">    </span><span class="kw">unlist</span>() <span class="op">%&gt;%</span><span class="st"> </span>.[<span class="dv">3</span>]</a>
+<a class="sourceLine" id="cb3-21" title="21">  </a>
+<a class="sourceLine" id="cb3-22" title="22">  <span class="cf">if</span>(<span class="op">!</span>data_name <span class="op">%in%</span><span class="st"> </span>files_on_prg){</a>
+<a class="sourceLine" id="cb3-23" title="23">    <span class="co"># upload data file for processing</span></a>
+<a class="sourceLine" id="cb3-24" title="24">    <span class="kw">scp_upload</span>(s, data_files[i], <span class="dt">to =</span> <span class="st">&quot;data/watlas/&quot;</span>)</a>
+<a class="sourceLine" id="cb3-25" title="25">  }</a>
+<a class="sourceLine" id="cb3-26" title="26">  </a>
+<a class="sourceLine" id="cb3-27" title="27">  <span class="co"># make job file</span></a>
+<a class="sourceLine" id="cb3-28" title="28">  {</a>
+<a class="sourceLine" id="cb3-29" title="29">    shebang &lt;-<span class="st"> </span><span class="kw">readLines</span>(<span class="st">&quot;code/template_job.sh&quot;</span>)</a>
+<a class="sourceLine" id="cb3-30" title="30">    </a>
+<a class="sourceLine" id="cb3-31" title="31">    <span class="co"># rename job</span></a>
+<a class="sourceLine" id="cb3-32" title="32">    shebang[<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">glue</span>(<span class="st">&#39;#SBATCH --job-name=ctmm_{data_ids[i]}&#39;</span>)</a>
+<a class="sourceLine" id="cb3-33" title="33">    </a>
+<a class="sourceLine" id="cb3-34" title="34">    text &lt;-<span class="st"> </span><span class="kw">glue</span>(<span class="st">&#39;Rscript code/code_doCtmm.r {data_files[i]}&#39;</span>)</a>
+<a class="sourceLine" id="cb3-35" title="35">    jobfile &lt;-<span class="st"> </span><span class="kw">glue</span>(<span class="st">&#39;code/job_ctmm_{data_ids[i]}.sh&#39;</span>)</a>
+<a class="sourceLine" id="cb3-36" title="36">    </a>
+<a class="sourceLine" id="cb3-37" title="37">    <span class="kw">writeLines</span>(<span class="kw">c</span>(shebang, text), <span class="dt">con =</span> jobfile)</a>
+<a class="sourceLine" id="cb3-38" title="38">    <span class="kw">scp_upload</span>(s, jobfile, <span class="dt">to =</span> <span class="st">&quot;code/&quot;</span>)</a>
+<a class="sourceLine" id="cb3-39" title="39">  }</a>
+<a class="sourceLine" id="cb3-40" title="40">  </a>
+<a class="sourceLine" id="cb3-41" title="41">  <span class="kw">ssh_exec_wait</span>(s, <span class="dt">command =</span> <span class="kw">glue</span>(<span class="st">&#39;dos2unix {jobfile}&#39;</span>))</a>
+<a class="sourceLine" id="cb3-42" title="42">  <span class="co"># process using ctmm</span></a>
+<a class="sourceLine" id="cb3-43" title="43">  <span class="kw">ssh_exec_wait</span>(s, <span class="dt">command =</span> <span class="kw">glue</span>(<span class="st">&#39;sbatch {jobfile}&#39;</span>))</a>
+<a class="sourceLine" id="cb3-44" title="44">  </a>
+<a class="sourceLine" id="cb3-45" title="45">  <span class="co"># disconnect</span></a>
+<a class="sourceLine" id="cb3-46" title="46">  <span class="kw">ssh_disconnect</span>(s)</a>
+<a class="sourceLine" id="cb3-47" title="47">}</a></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="applying-ctmm-to-watlas-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/pratikunterwegs/knotDistance/edit/master/02_cleaning_data.rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
