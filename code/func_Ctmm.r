@@ -118,11 +118,11 @@ do_ctmm <- function(datafile){
     png(filename = as.character(glue('output/figs/vg_ctmm_{id_data}.png')),
         height = 800, width = 1600)
     {
-      par(mfrow=c(10, ceiling(length(mods)/ 10)))
-      for(i in 1:length(mods))
+      par(mfrow=c(10, ceiling(length(mod)/ 10)))
+      for(i in 1:length(mod))
       {
-        modtype = summary(mods[[i]])$name
-        plot(variogram(tel[[i]]), CTMM=mods[[i]], 
+        modtype = summary(mod[[i]])$name
+        plot(variogram(tel[[i]]), CTMM=mod[[i]], 
              main = as.character(glue('{id_data}: {modtype}')))
       }
     }
