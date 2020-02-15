@@ -1,0 +1,124 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# CTMM on WATLAS data using a computing cluster
+
+This section is about running CTMM [@calabrese2016] on individual level movement data to calculate mean speeds and total distance travelled.
+CTMM is a time intensive process taking _n log(n)_ seconds for _n_ positions (pers. comm. Mike Noonan).
+We circumvent the obvious time cost by sending each individual's track to the RUG computing cluster for processing.
+
+Methodologically, we read in raw, unprocessed data, remove so-called attractor points, and then clean the data by applying a 5-fix median filter.
+We identify tidal cycles using data from Rijkswaterstaat, and split movement tracks into subsets lasting from one high tide to the next.
+Treating these subsets as individual replicates in a population, as recommended [@calabrese2016], we guess CTMM parameters and fit CTMM to each tidal cycle.
+Finally, we output the fitted models and their summaries as `.Rdata` and text files, respectively.
+
+Much of the preliminary processing also happens on the cluster, and uses the the [WATLAS Utilities package](https://github.com/pratikunterwegs/watlasUtils).
+
+**Workflow**
+
+1. Prepare required libraries.
+2. Read in data, apply the cleaning function, and overwrite local data.
+
+## Prepare `watlasUtils` and other libraries
+
+```{r install_watlasutils_2, message=FALSE, warning=FALSE, eval=FALSE}
+# watlasUtils assumed installed from the previous step
+# if not, install from the github repo as shown below
+
+devtools::install_github("pratikunterwegs/watlasUtils", ref="devbranch")
+library(watlasUtils)
+
+# libraries to process data
+library(data.table)
+library(purrr)
+library(glue)
+library(fasttime)
+library(bit64)
+library(stringr)
+
+# libraries for the cluster
+library(ssh)
+```
+
+## Prepare to remove attractor points, clean data and add tides
+
+```{r read_attractors, eval=FALSE, message=FALSE, warning=FALSE}
+# read in identified attractor points
+atp <- fread("data/attractor_points.txt")
+
+# make a list of data files to read
+data_files <- list.files(path = "data/watlas/", pattern = "whole_season*", full.names = TRUE)
+
+data_ids <- str_extract(data_files, "(tx_\\d+)") %>% str_sub(-3,-1)
+
+# read deployment data from local file in data folder
+tag_info <- fread("data/SelinDB.csv")
+
+# filter out NAs in release date and time
+tag_info <- tag_info[!is.na(Release_Date) & !is.na(Release_Time),]
+
+# make release date column as POSIXct
+tag_info[,Release_Date := as.POSIXct(paste(Release_Date, Release_Time, sep = " "), 
+                                     format = "%d.%m.%y %H:%M", tz = "CET")]
+
+# sub for knots in data
+data_files <- data_files[as.integer(data_ids) %in% tag_info$Toa_Tag][1]
+
+# add tide data
+tides_2018 <- "data/tidesSummer2018.csv"
+```
+
+## Read, clean, and write data
+
+```{r ctmm_on_cluster, eval=FALSE, message=FALSE, warning=FALSE}
+# read password
+password = fread("data/password.txt")$password
+
+# transfer files and process using ctmm
+for(i in 1:length(data_files)){
+  # connect to peregrine
+  s <- ssh_connect("p284074@peregrine.hpc.rug.nl", passwd = password)
+  # make directory if non-existent
+  ssh_exec_wait(s, command = "mkdir -p data/watlas")
+  
+  # list files already present
+  files_on_prg <- ssh_exec_internal(s, command = "ls data/watlas")
+  files_on_prg <- rawToChar(files_on_prg$stdout) %>% 
+    str_split("\n") %>% 
+    unlist()
+  
+  # check name
+  data_name <- data_files[i] %>% 
+    str_split("/") %>% 
+    unlist() %>% .[3]
+  
+  if(!data_name %in% files_on_prg){
+    # upload data file for processing
+    scp_upload(s, data_files[i], to = "data/watlas/")
+  }
+  
+  # make job file
+  {
+    shebang <- readLines("code/template_job.sh")
+    
+    # rename job
+    shebang[2] <- glue('#SBATCH --job-name=ctmm_{data_ids[i]}')
+    
+    text <- glue('Rscript code/code_doCtmm.r {data_files[i]}')
+    jobfile <- glue('code/job_ctmm_{data_ids[i]}.sh')
+    
+    writeLines(c(shebang, text), con = jobfile)
+    scp_upload(s, jobfile, to = "code/")
+  }
+  
+  ssh_exec_wait(s, command = glue('dos2unix {jobfile}'))
+  # process using ctmm
+  ssh_exec_wait(s, command = glue('sbatch {jobfile}'))
+  
+  # disconnect
+  ssh_disconnect(s)
+}
+
+```

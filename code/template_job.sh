@@ -1,6 +1,6 @@
 #! /bin/bash
 #SBATCH --job-name=try_ctmm
-#SBATCH --time=00:10:00
+#SBATCH --time=01:00:00
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=9000
 #SBATCH --partition=regular

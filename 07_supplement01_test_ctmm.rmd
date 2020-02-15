@@ -1,0 +1,144 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Applying CTMM to WATLAS data
+
+Here, we examine the effect of different aggregation scales on CTMM fits and speed estimates.
+
+## Load libraries
+
+```{r load_libs_supp_01, eval=FALSE}
+# load libs
+library(data.table)
+library(lubridate)
+library(sf)
+library(glue)
+library(stringr)
+library(fasttime)
+library(tibble)
+library(dplyr)
+library(purrr)
+library(tidyr)
+
+# devtools::install_github("pratikunterwegs/watlasUtils", ref = "devbranch")
+library(watlasUtils)
+library(ctmm)
+
+# plot libs
+library(ggplot2)
+library(ggthemes)
+
+# ssh func
+library(ssh)
+```
+
+## Load prelim data
+
+```{r prep_data_s01, eval=FALSE}
+# load data
+# make a list of data files to read
+data_files <- list.files(path = "data/watlas/", pattern = "whole_season*", full.names = TRUE)
+
+data_ids <- str_extract(data_files, "(tx_\\d+)") %>% str_sub(-3,-1)
+
+# read deployment data from local file in data folder
+tag_info <- fread("data/SelinDB.csv")
+
+# filter out NAs in release date and time
+tag_info <- tag_info[!is.na(Release_Date) & !is.na(Release_Time),]
+
+# make release date column as POSIXct
+tag_info[,Release_Date := as.POSIXct(paste(Release_Date, Release_Time, sep = " "), 
+                                     format = "%d.%m.%y %H:%M", tz = "CET")]
+
+# sub for knots in data
+data_files <- data_files[as.integer(data_ids) %in% tag_info$Toa_Tag][1:10]
+data_ids <- str_extract(data_files, "(tx_\\d+)") %>% str_sub(-3,-1)
+
+```
+
+## Choose scales of aggregation
+
+```{r choose_agg_scale, eval=FALSE}
+scales <- c(15, 30, 60)
+
+data_to_test <- crossing(scales, nesting(data_files, data_ids))
+rm(scales, data_files)
+```
+
+```{r count_patches_remaining, eval=FALSE}
+# read password
+password = fread("data/password.txt")$password
+
+for(i in 1:nrow(data_to_test)){
+
+  scale <- data_to_test$scales[i]
+  file <- data_to_test$data_files[i]
+  id <- data_to_test$data_ids[i]
+  # connect to peregrine
+  s <- ssh_connect("p284074@peregrine.hpc.rug.nl", passwd = password)
+  # make directory if non-existent
+  ssh_exec_wait(s, command = "mkdir -p data/watlas")
+  
+  # list files already present
+  files_on_prg <- ssh_exec_internal(s, command = "ls data/watlas")
+  files_on_prg <- rawToChar(files_on_prg$stdout) %>% 
+    str_split("\n") %>% 
+    unlist()
+  
+  # check name
+  data_name <- file %>% 
+    str_split("/") %>% 
+    unlist() %>% .[3]
+  
+  if(!data_name %in% files_on_prg){
+    # upload data file for processing
+    scp_upload(s, file, to = "data/watlas/")
+  }
+  
+  # make job file
+  {
+    shebang <- readLines("code/template_job.sh")
+    
+    # rename job
+    shebang[2] <- glue('#SBATCH --job-name=ctmm_{file}')
+    
+    text <- glue('Rscript code/code_test_ctmm_scale.r {file} {scale}')
+    jobfile <- glue('code/job_ctmm_{id}_{scale}.sh')
+    
+    writeLines(c(shebang, text), con = jobfile)
+    scp_upload(s, jobfile, to = "code/")
+  }
+  
+  ssh_exec_wait(s, command = glue('dos2unix {jobfile}'))
+  # process using ctmm
+  ssh_exec_wait(s, command = glue('sbatch {jobfile}'))
+  
+  # disconnect
+  ssh_disconnect(s)
+
+}
+      # # ctmm section
+      # {
+      #   # get the outliers but do not plot
+      #   outliers <- map(tel, outlie, plot=FALSE)
+      #   # get a list of 99 th percentile outliers
+      #   q90 <- map(outliers, function(this_outlier_set){
+      #     quantile(this_outlier_set[[1]], probs = c(0.99))
+      #   })
+      #   # remove outliers from telemetry data
+      #   tel <- pmap(list(tel, outliers, q90), 
+      #               function(this_tel_obj, this_outlier_set, outlier_quantile) 
+      #               {this_tel_obj[-(which(this_outlier_set[[1]] >= outlier_quantile)),]})
+        
+      #   # some patches have no data remaining, filter them out
+      #   tel <- keep(tel, function(this_tel){nrow(this_tel) > 0})
+        
+      #   r_patches <- length(tel)
+      # }
+      # ratio = r_patches/n_patches
+      # message(ratio)
+      # return(ratio)
+```

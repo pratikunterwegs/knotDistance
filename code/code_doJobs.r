@@ -1,5 +1,6 @@
 #### code to do jobs on the cluster
 
+#### first transfer raw data
 # load libs
 library(ssh)
 library(stringr)
