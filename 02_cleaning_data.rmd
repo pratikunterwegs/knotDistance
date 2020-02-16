@@ -23,7 +23,7 @@ Much of the preliminary processing also happens on the cluster, and uses the the
 
 ## Prepare `watlasUtils` and other libraries
 
-```{r install_watlasutils_2, message=FALSE, warning=FALSE}
+```{r install_watlasutils_2, message=FALSE, warning=FALSE, eval=FALSE}
 # watlasUtils assumed installed from the previous step
 # if not, install from the github repo as shown below
 
