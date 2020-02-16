@@ -39,7 +39,7 @@ library(ssh)
 ```{r prep_data_s01, eval=FALSE}
 # load data
 # make a list of data files to read
-data_files <- list.files(path = "data/watlas/", pattern = "whole_season*", full.names = TRUE)
+data_files <- list.files(path = "data/watlas", pattern = "whole_season*", full.names = TRUE)
 
 data_ids <- str_extract(data_files, "(tx_\\d+)") %>% str_sub(-3,-1)
 
@@ -95,7 +95,7 @@ for(i in 1:nrow(data_to_test)){
   
   if(!data_name %in% files_on_prg){
     # upload data file for processing
-    scp_upload(s, file, to = "data/watlas/")
+    scp_upload(s, file, to = "data/watlas")
   }
   
   # make job file
@@ -105,7 +105,7 @@ for(i in 1:nrow(data_to_test)){
     # rename job
     shebang[2] <- glue('#SBATCH --job-name=ctmm_{file}')
     
-    text <- glue('Rscript code/code_test_ctmm_scale.r {file} {scale}')
+    text <- glue('Rscript --vanilla code/code_test_ctmm_scale.r {file} {scale}')
     jobfile <- glue('code/job_ctmm_{id}_{scale}.sh')
     
     writeLines(c(shebang, text), con = jobfile)
