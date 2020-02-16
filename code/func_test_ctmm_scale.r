@@ -112,11 +112,23 @@ test_ctmm_scale <- function(datafile, scale){
   }
   
   message("model fit!")
+
+  # print model
+  {
+    if(dir.exists("mod_output") == F)
+    {
+      dir.create("mod_output")
+    }
+    writeLines(R.utils::captureOutput(map(mod, speed, units = FALSE)), 
+               con = as.character(glue('mod_output/ctmm_{id_data}_{scale}.txt')))
+    # save the models
+    save(mod, file = as.character(glue('output/mods/ctmm_{id_data}_{scale}.rdata')))
+  }
   
   # check model fit
   {
     png(filename = as.character(glue('output/figs/vg_ctmm_{id_data}_{scale}_seconds.png')),
-        height = 800, width = 1600)
+        height = 800, width = 1600, type = "cairo")
     {
       par(mfrow=c(10, ceiling(length(mod)/ 10)), mar = c(1,1,1,1))
       for(i in 1:length(mod))
@@ -131,17 +143,7 @@ test_ctmm_scale <- function(datafile, scale){
   
   # get speed output
   
-  # print model
-  {
-    if(dir.exists("mod_output") == F)
-    {
-      dir.create("mod_output")
-    }
-    writeLines(R.utils::captureOutput(map(mod, speed, units = FALSE)), 
-               con = as.character(glue('mod_output/ctmm_{id_data}_{scale}.txt')))
-    # save the models
-    save(mod, file = as.character(glue('output/mods/ctmm_{id_data}_{scale}.rdata')))
-  }
+  
   
 }
 # ends here
