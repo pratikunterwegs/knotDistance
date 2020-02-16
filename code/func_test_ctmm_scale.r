@@ -55,9 +55,10 @@ test_ctmm_scale <- function(datafile, scale){
     data_for_ctmm <- setDT(data)[,.(id, tide_number, x, y, time, VARX, VARY)]
     
     # aggregate within a patch to 10 seconds
-    data_for_ctmm <- split(data_for_ctmm, f = data_for_ctmm$tide_number) %>% 
-      map(wat_agg_data, interval = scale) %>% 
-      bind_rows()
+    # data_for_ctmm <- split(data_for_ctmm, f = data_for_ctmm$tide_number) %>% 
+    #   map(wat_agg_data, interval = scale) %>% 
+    #   bind_rows()
+    data_for_ctmm <- wat_agg_data(wat_agg_data, interval = scale)
     
     # make each tidal cycle an indiv
     setDT(data_for_ctmm)
