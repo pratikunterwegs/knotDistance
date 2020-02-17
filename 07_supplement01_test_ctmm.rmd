@@ -120,7 +120,7 @@ for(i in 1:nrow(data_to_test)){
   ssh_disconnect(s)
 
 }
-      # # ctmm section
+        # # ctmm section
       # {
       #   # get the outliers but do not plot
       #   outliers <- map(tel, outlie, plot=FALSE)
