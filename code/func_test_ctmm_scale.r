@@ -127,7 +127,7 @@ test_ctmm_scale <- function(datafile, scale){
     
     # run ctmm fit
     mod <- map2(tel, guess_list, function(obj_tel, obj_guess){
-      ctmm.fit(obj_tel, CTMM = obj_guess, error = TRUE)
+      ctmm.fit(obj_tel, CTMM = obj_guess)
     })
   }
   
@@ -139,8 +139,19 @@ test_ctmm_scale <- function(datafile, scale){
     {
       dir.create("mod_output")
     }
-    writeLines(R.utils::captureOutput(map(mod, speed, units = FALSE)), 
-               con = as.character(glue('mod_output/ctmm_{id_data}_{scale}.txt')))
+    
+    # get speed estimates with id, tide, and scale
+    speed_est <- map(mod, speed, units = FALSE)
+    speed_est <- data.table::rbindlist(speed_est)
+    speed_est[,`:=`(id = id_data,
+                    scale = scale,
+                    tide_number = substring(names(mod), 
+                                            regexpr("_", names(mod)) + 1, 
+                                            nchar(names(mod))))]
+    
+    # write data
+    fwrite(speed_est, file = "output/speed_estimates_2018.csv", append = TRUE)
+    
     # save the models
     save(mod, file = as.character(glue('output/mods/ctmm_{id_data}_{scale}.rdata')))
   }
