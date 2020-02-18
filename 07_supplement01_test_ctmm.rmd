@@ -76,7 +76,7 @@ password = fread("data/password.txt")$password
 {
   s <- ssh_connect("p284074@peregrine.hpc.rug.nl", passwd = password)
   rfiles <- list.files("code/", pattern = ".r", full.names = TRUE)
-  scp_upload(s, rfiles, to = "data/code")
+  scp_upload(s, rfiles, to = "code/")
   ssh_disconnect(s)
 }
 
