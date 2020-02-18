@@ -75,7 +75,7 @@ password = fread("data/password.txt")$password
 # transfer code files
 {
   s <- ssh_connect("p284074@peregrine.hpc.rug.nl", passwd = password)
-  rfiles <- list.files("code/", pattern = ".r", full.names = TRUE)
+  rfiles <- list.files("code", pattern = ".r", full.names = TRUE)
   scp_upload(s, rfiles, to = "code/")
   ssh_disconnect(s)
 }
@@ -137,3 +137,45 @@ for(i in 1:nrow(data_to_test)){
   
 }
 ```
+
+```{r get_speed_estimates}
+# access data from cluster
+{
+  s <- ssh_connect("p284074@peregrine.hpc.rug.nl", passwd = password)
+  scp_download(s, files = "output/speed_estimates_2018.csv", to = "data/mod_output/")
+  ssh_disconnect(s)
+}
+
+# read data and process for plotting
+{
+  data <- fread("data/mod_output/speed_estimates_2018.csv")
+  data <- setDF(data) %>% as_tibble() %>% 
+    rename(mean = est) %>% 
+    pivot_longer(cols = c(low, mean, high),
+                       names_to = "estimate", values_to = "speed") %>% 
+    filter(!is.infinite(speed)) %>% 
+    mutate(estimate = as.factor(estimate),
+           estimate = fct_relevel(estimate, "low", "mean", "high"))
+}
+
+# plot data as lines
+fig_compare_ctmm <- ggplot(data)+
+  geom_line(aes(x = scale, y = speed, group = interaction(id, tide_number),
+                col = factor(estimate)), size = 0.1)+
+  
+  geom_boxplot(aes(x = scale, y = speed, group = interaction(scale),
+                col = factor(estimate)), size = 0.3, notch = F, 
+               fill = "grey90", alpha= 0.5)+
+  facet_grid(id~estimate, labeller = label_both)+
+  scale_x_continuous(breaks = c(15,30,60))+
+  scale_colour_scico_d(palette = "berlin", begin = 0.2, end = 0.8)+
+  coord_cartesian(ylim = c(0,10))+
+  theme_few()+
+  theme(legend.position = "none")+
+  labs(x = "aggregation interval (s)", y = "mean speed (m/s) foraging period")
+
+# save figure
+ggsave(fig_compare_ctmm, filename = "figs/fig_compare_scale.png", height = 5, width = 8, dpi=300)
+dev.off()
+```
+
