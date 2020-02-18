@@ -141,7 +141,7 @@ test_ctmm_scale <- function(datafile, scale){
     }
     
     # get speed estimates with id, tide, and scale
-    speed_est <- map(mod, speed, units = FALSE)
+    speed_est <- map(mod, function(model) as.data.table(speed(model, units=FALSE)))
     speed_est <- data.table::rbindlist(speed_est)
     speed_est[,`:=`(id = id_data,
                     scale = scale,
