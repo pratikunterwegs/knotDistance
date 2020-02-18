@@ -27,7 +27,7 @@ Much of the preliminary processing also happens on the cluster, and uses the the
 # watlasUtils assumed installed from the previous step
 # if not, install from the github repo as shown below
 
-devtools::install_github("pratikunterwegs/watlasUtils", ref="devbranch")
+# devtools::install_github("pratikunterwegs/watlasUtils", ref="devbranch")
 library(watlasUtils)
 
 # libraries to process data
@@ -43,6 +43,8 @@ library(ssh)
 ```
 
 ## Prepare to remove attractor points, clean data and add tides
+
+# THIS IS A TEST CASE FOR NOW
 
 ```{r read_attractors, eval=FALSE, message=FALSE, warning=FALSE}
 # read in identified attractor points
@@ -64,7 +66,11 @@ tag_info[,Release_Date := as.POSIXct(paste(Release_Date, Release_Time, sep = " "
                                      format = "%d.%m.%y %H:%M", tz = "CET")]
 
 # sub for knots in data
-data_files <- data_files[as.integer(data_ids) %in% tag_info$Toa_Tag][1]
+data_files <- data_files[as.integer(data_ids) %in% tag_info$Toa_Tag]
+
+# subset for test
+data_files <- data_files[1]
+data_ids <- str_extract(data_files, "(tx_\\d+)") %>% str_sub(-3,-1)
 
 # add tide data
 tides_2018 <- "data/tidesSummer2018.csv"

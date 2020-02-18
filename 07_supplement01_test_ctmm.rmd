@@ -39,7 +39,7 @@ library(ssh)
 ```{r prep_data_s01, eval=FALSE}
 # load data
 # make a list of data files to read
-data_files <- list.files(path = "data/watlas/", pattern = "whole_season*", full.names = TRUE)
+data_files <- list.files(path = "data/watlas", pattern = "whole_season*", full.names = TRUE)
 
 data_ids <- str_extract(data_files, "(tx_\\d+)") %>% str_sub(-3,-1)
 
@@ -72,8 +72,24 @@ rm(scales, data_files)
 # read password
 password = fread("data/password.txt")$password
 
-for(i in 1:nrow(data_to_test)){
+# transfer code files
+{
+  s <- ssh_connect("p284074@peregrine.hpc.rug.nl", passwd = password)
+  rfiles <- list.files("code/", pattern = ".r", full.names = TRUE)
+  scp_upload(s, rfiles, to = "data/code")
+  ssh_disconnect(s)
+}
 
+# clear old speed estimates
+{
+  s <- ssh_connect("p284074@peregrine.hpc.rug.nl", passwd = password)
+  ssh_exec_wait(s, command = "rm output/speed_estimates_2018.csv")
+  ssh_disconnect(s)
+}
+
+# execute tests
+for(i in 1:nrow(data_to_test)){
+  
   scale <- data_to_test$scales[i]
   file <- data_to_test$data_files[i]
   id <- data_to_test$data_ids[i]
@@ -95,7 +111,7 @@ for(i in 1:nrow(data_to_test)){
   
   if(!data_name %in% files_on_prg){
     # upload data file for processing
-    scp_upload(s, file, to = "data/watlas/")
+    scp_upload(s, file, to = "data/watlas")
   }
   
   # make job file
@@ -105,7 +121,7 @@ for(i in 1:nrow(data_to_test)){
     # rename job
     shebang[2] <- glue('#SBATCH --job-name=ctmm_{file}')
     
-    text <- glue('Rscript code/code_test_ctmm_scale.r {file} {scale}')
+    text <- glue('Rscript --vanilla code/code_test_ctmm_scale.r {file} {scale}')
     jobfile <- glue('code/job_ctmm_{id}_{scale}.sh')
     
     writeLines(c(shebang, text), con = jobfile)
@@ -118,27 +134,6 @@ for(i in 1:nrow(data_to_test)){
   
   # disconnect
   ssh_disconnect(s)
-
+  
 }
-      # # ctmm section
-      # {
-      #   # get the outliers but do not plot
-      #   outliers <- map(tel, outlie, plot=FALSE)
-      #   # get a list of 99 th percentile outliers
-      #   q90 <- map(outliers, function(this_outlier_set){
-      #     quantile(this_outlier_set[[1]], probs = c(0.99))
-      #   })
-      #   # remove outliers from telemetry data
-      #   tel <- pmap(list(tel, outliers, q90), 
-      #               function(this_tel_obj, this_outlier_set, outlier_quantile) 
-      #               {this_tel_obj[-(which(this_outlier_set[[1]] >= outlier_quantile)),]})
-        
-      #   # some patches have no data remaining, filter them out
-      #   tel <- keep(tel, function(this_tel){nrow(this_tel) > 0})
-        
-      #   r_patches <- length(tel)
-      # }
-      # ratio = r_patches/n_patches
-      # message(ratio)
-      # return(ratio)
 ```
