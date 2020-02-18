@@ -65,7 +65,7 @@ test_ctmm_scale <- function(datafile, scale){
     data_summary <- data[,.(duration = (max(time) - min(time))/60,
                             prop_fixes = length(x) / ((max(time) - min(time))/3)),
                           by = .(tide_number)]
-    data_summary <- data_summary[duration >= tide_duration && prop_fixes >= tide_quality,]
+    data_summary <- data_summary[duration >= tide_duration & prop_fixes >= tide_quality,]
 
     data <- data[tide_number %in% data_summary$tide_number,]
   }
