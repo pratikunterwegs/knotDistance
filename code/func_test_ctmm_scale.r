@@ -57,7 +57,7 @@ test_ctmm_scale <- function(datafile, scale){
 
     # filter for low tide
     data <- setDT(data)
-    data <- data[between(tidaltime, c(tide_hr_start, tide_hr_end)*60),]
+    data <- data[between(tidaltime, tide_hr_start*60, tide_hr_end*60),]
   }
 
   # implement quality filters
