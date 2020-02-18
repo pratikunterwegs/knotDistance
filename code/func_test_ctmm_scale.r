@@ -127,7 +127,7 @@ test_ctmm_scale <- function(datafile, scale){
     
     # run ctmm fit
     mod <- map2(tel, guess_list, function(obj_tel, obj_guess){
-      ctmm.fit(obj_tel, CTMM = obj_guess)
+      ctmm.fit(obj_tel, CTMM = obj_guess, error = TRUE)
     })
   }
   
