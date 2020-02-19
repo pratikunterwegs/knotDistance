@@ -21,37 +21,31 @@ Much of the preliminary processing also happens on the cluster, and uses the the
 1. Prepare required libraries.
 2. Read in data, apply the cleaning function, and overwrite local data.
 
-## Prepare `watlasUtils` and other libraries
-
-```{r install_watlasutils_2, message=FALSE, warning=FALSE, eval=FALSE}
-# watlasUtils assumed installed from the previous step
-# if not, install from the github repo as shown below
-
-# devtools::install_github("pratikunterwegs/watlasUtils", ref="devbranch")
-library(watlasUtils)
-
-# libraries to process data
+```{r load_libs, eval=FALSE}
+# load libs
 library(data.table)
-library(purrr)
 library(glue)
-library(fasttime)
-library(bit64)
 library(stringr)
+library(tibble)
+library(dplyr)
+library(tidyr)
+library(forcats)
 
-# libraries for the cluster
+# plot libs
+library(ggplot2)
+library(ggthemes)
+library(scico)
+
+# ssh func
 library(ssh)
 ```
 
-## Prepare to remove attractor points, clean data and add tides
+## Load prelim data
 
-# THIS IS A TEST CASE FOR NOW
-
-```{r read_attractors, eval=FALSE, message=FALSE, warning=FALSE}
-# read in identified attractor points
-atp <- fread("data/attractor_points.txt")
-
+```{r prep_data, eval=FALSE}
+# load data
 # make a list of data files to read
-data_files <- list.files(path = "data/watlas/", pattern = "whole_season*", full.names = TRUE)
+data_files <- list.files(path = "data/watlas", pattern = "whole_season*", full.names = TRUE)
 
 data_ids <- str_extract(data_files, "(tx_\\d+)") %>% str_sub(-3,-1)
 
@@ -67,23 +61,44 @@ tag_info[,Release_Date := as.POSIXct(paste(Release_Date, Release_Time, sep = " "
 
 # sub for knots in data
 data_files <- data_files[as.integer(data_ids) %in% tag_info$Toa_Tag]
-
-# subset for test
-data_files <- data_files[1]
 data_ids <- str_extract(data_files, "(tx_\\d+)") %>% str_sub(-3,-1)
 
-# add tide data
-tides_2018 <- "data/tidesSummer2018.csv"
 ```
 
-## Read, clean, and write data
+## Choose scales of aggregation
 
-```{r ctmm_on_cluster, eval=FALSE, message=FALSE, warning=FALSE}
+```{r prep_agg_scale, eval=FALSE}
+scales <- 30
+
+data_to_test <- crossing(scales, nesting(data_files, data_ids))
+rm(scales, data_files)
+```
+
+```{r send_data, eval=FALSE}
 # read password
 password = fread("data/password.txt")$password
 
-# transfer files and process using ctmm
-for(i in 1:length(data_files)){
+# transfer code files
+{
+  s <- ssh_connect("p284074@peregrine.hpc.rug.nl", passwd = password)
+  rfiles <- list.files("code", pattern = ".r", full.names = TRUE)
+  scp_upload(s, rfiles, to = "code/")
+  ssh_disconnect(s)
+}
+
+# clear old speed estimates
+{
+  s <- ssh_connect("p284074@peregrine.hpc.rug.nl", passwd = password)
+  ssh_exec_wait(s, command = "rm output/speed_estimates_2018.csv")
+  ssh_disconnect(s)
+}
+
+# execute tests
+for(i in 1:nrow(data_to_test)){
+  
+  scale <- data_to_test$scales[i]
+  file <- data_to_test$data_files[i]
+  id <- data_to_test$data_ids[i]
   # connect to peregrine
   s <- ssh_connect("p284074@peregrine.hpc.rug.nl", passwd = password)
   # make directory if non-existent
@@ -96,13 +111,13 @@ for(i in 1:length(data_files)){
     unlist()
   
   # check name
-  data_name <- data_files[i] %>% 
+  data_name <- file %>% 
     str_split("/") %>% 
     unlist() %>% .[3]
   
   if(!data_name %in% files_on_prg){
     # upload data file for processing
-    scp_upload(s, data_files[i], to = "data/watlas/")
+    scp_upload(s, file, to = "data/watlas")
   }
   
   # make job file
@@ -110,10 +125,10 @@ for(i in 1:length(data_files)){
     shebang <- readLines("code/template_job.sh")
     
     # rename job
-    shebang[2] <- glue('#SBATCH --job-name=ctmm_{data_ids[i]}')
+    shebang[2] <- glue('#SBATCH --job-name=ctmm_{file}')
     
-    text <- glue('Rscript code/code_doCtmm.r {data_files[i]}')
-    jobfile <- glue('code/job_ctmm_{data_ids[i]}.sh')
+    text <- glue('Rscript --vanilla code/code_test_ctmm_scale.r {file} {scale}')
+    jobfile <- glue('code/job_ctmm_{id}_{scale}.sh')
     
     writeLines(c(shebang, text), con = jobfile)
     scp_upload(s, jobfile, to = "code/")
@@ -125,6 +140,51 @@ for(i in 1:length(data_files)){
   
   # disconnect
   ssh_disconnect(s)
+  
+}
+```
+
+
+```{r get_speed_estimates, eval=FALSE}
+# access data from cluster
+{
+  s <- ssh_connect("p284074@peregrine.hpc.rug.nl", passwd = password)
+  scp_download(s, files = "output/speed_estimates_2018.csv", to = "data/mod_output/")
+  ssh_disconnect(s)
 }
 
+# read data and process for plotting
+{
+  data <- fread("data/mod_output/speed_estimates_2018.csv", fill = T)
+  data <- setDF(data) %>% 
+    as_tibble() %>% 
+    filter(!is.na(id)) %>% 
+    rename(mean = est) %>% 
+    pivot_longer(cols = c(low, mean, high),
+                       names_to = "estimate", values_to = "speed") %>% 
+    filter(!is.infinite(speed)) %>% 
+    mutate(estimate = as.factor(estimate),
+           estimate = fct_relevel(estimate, "low", "mean", "high"))
+}
+
+# plot data as lines
+# fig_speed_tide <- 
+  ggplot(data)+
+  geom_jitter(aes(x = tide_number, y = speed, group = id,
+                col = factor(estimate)), size = 0.1, alpha = 0.5)+
+  
+  # geom_boxplot(aes(x = scale, y = speed, group = interaction(scale),
+  #               col = factor(estimate)), size = 0.3, notch = F, 
+  #              fill = "grey90", alpha= 0.5)+
+  facet_wrap(~estimate, labeller = label_both, ncol = 1)+
+  # scale_x_continuous(breaks = c(15,30,60))+
+  scale_colour_scico_d(palette = "berlin", begin = 0.2, end = 0.8)+
+  coord_cartesian(ylim = c(0,5))+
+  theme_few()+
+  theme(legend.position = "none")+
+  labs(x = "tidal cycle (#)", y = "mean speed (m/s) foraging period")
+
+# save figure
+ggsave(fig_compare_ctmm, filename = "figs/fig_compare_scale.png", height = 5, width = 8, dpi=300)
+dev.off()
 ```

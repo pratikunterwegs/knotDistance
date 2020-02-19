@@ -145,9 +145,12 @@ test_ctmm_scale <- function(datafile, scale){
     speed_est <- data.table::rbindlist(speed_est)
     speed_est[,`:=`(id = id_data,
                     scale = scale,
-                    tide_number = substring(names(mod), 
+                    tide_number = as.numeric(substring(names(mod), 
                                             regexpr("_", names(mod)) + 1, 
-                                            nchar(names(mod))))]
+                                            nchar(names(mod)))))]
+
+    # add tide quality checks
+    speed_est <- merge(speed_est, data_summary, by = "tide_number")
     
     # write data
     fwrite(speed_est, file = "output/speed_estimates_2018.csv", append = TRUE)
