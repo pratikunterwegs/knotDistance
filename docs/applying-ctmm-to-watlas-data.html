@@ -24,7 +24,7 @@
 <meta name="author" content="Pratik R Gupte" />
 
 
-<meta name="date" content="2020-02-15" />
+<meta name="date" content="2020-02-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -192,7 +192,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">3.2</span> Load prelim data</h2>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># load data</span></a>
 <a class="sourceLine" id="cb5-2" title="2"><span class="co"># make a list of data files to read</span></a>
-<a class="sourceLine" id="cb5-3" title="3">data_files &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">path =</span> <span class="st">&quot;data/watlas/&quot;</span>, <span class="dt">pattern =</span> <span class="st">&quot;whole_season*&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb5-3" title="3">data_files &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">path =</span> <span class="st">&quot;data/watlas&quot;</span>, <span class="dt">pattern =</span> <span class="st">&quot;whole_season*&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb5-4" title="4"></a>
 <a class="sourceLine" id="cb5-5" title="5">data_ids &lt;-<span class="st"> </span><span class="kw">str_extract</span>(data_files, <span class="st">&quot;(tx_</span><span class="ch">\\</span><span class="st">d+)&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_sub</span>(<span class="op">-</span><span class="dv">3</span>,<span class="op">-</span><span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb5-6" title="6"></a>
@@ -219,75 +219,108 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co"># read password</span></a>
 <a class="sourceLine" id="cb7-2" title="2">password =<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/password.txt&quot;</span>)<span class="op">$</span>password</a>
 <a class="sourceLine" id="cb7-3" title="3"></a>
-<a class="sourceLine" id="cb7-4" title="4"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(data_to_test)){</a>
-<a class="sourceLine" id="cb7-5" title="5"></a>
-<a class="sourceLine" id="cb7-6" title="6">  scale &lt;-<span class="st"> </span>data_to_test<span class="op">$</span>scales[i]</a>
-<a class="sourceLine" id="cb7-7" title="7">  file &lt;-<span class="st"> </span>data_to_test<span class="op">$</span>data_files[i]</a>
-<a class="sourceLine" id="cb7-8" title="8">  id &lt;-<span class="st"> </span>data_to_test<span class="op">$</span>data_ids[i]</a>
-<a class="sourceLine" id="cb7-9" title="9">  <span class="co"># connect to peregrine</span></a>
-<a class="sourceLine" id="cb7-10" title="10">  s &lt;-<span class="st"> </span><span class="kw">ssh_connect</span>(<span class="st">&quot;p284074@peregrine.hpc.rug.nl&quot;</span>, <span class="dt">passwd =</span> password)</a>
-<a class="sourceLine" id="cb7-11" title="11">  <span class="co"># make directory if non-existent</span></a>
-<a class="sourceLine" id="cb7-12" title="12">  <span class="kw">ssh_exec_wait</span>(s, <span class="dt">command =</span> <span class="st">&quot;mkdir -p data/watlas&quot;</span>)</a>
-<a class="sourceLine" id="cb7-13" title="13">  </a>
-<a class="sourceLine" id="cb7-14" title="14">  <span class="co"># list files already present</span></a>
-<a class="sourceLine" id="cb7-15" title="15">  files_on_prg &lt;-<span class="st"> </span><span class="kw">ssh_exec_internal</span>(s, <span class="dt">command =</span> <span class="st">&quot;ls data/watlas&quot;</span>)</a>
-<a class="sourceLine" id="cb7-16" title="16">  files_on_prg &lt;-<span class="st"> </span><span class="kw">rawToChar</span>(files_on_prg<span class="op">$</span>stdout) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-17" title="17"><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-18" title="18"><span class="st">    </span><span class="kw">unlist</span>()</a>
-<a class="sourceLine" id="cb7-19" title="19">  </a>
-<a class="sourceLine" id="cb7-20" title="20">  <span class="co"># check name</span></a>
-<a class="sourceLine" id="cb7-21" title="21">  data_name &lt;-<span class="st"> </span>file <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-22" title="22"><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;/&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-23" title="23"><span class="st">    </span><span class="kw">unlist</span>() <span class="op">%&gt;%</span><span class="st"> </span>.[<span class="dv">3</span>]</a>
-<a class="sourceLine" id="cb7-24" title="24">  </a>
-<a class="sourceLine" id="cb7-25" title="25">  <span class="cf">if</span>(<span class="op">!</span>data_name <span class="op">%in%</span><span class="st"> </span>files_on_prg){</a>
-<a class="sourceLine" id="cb7-26" title="26">    <span class="co"># upload data file for processing</span></a>
-<a class="sourceLine" id="cb7-27" title="27">    <span class="kw">scp_upload</span>(s, file, <span class="dt">to =</span> <span class="st">&quot;data/watlas/&quot;</span>)</a>
-<a class="sourceLine" id="cb7-28" title="28">  }</a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="co"># transfer code files</span></a>
+<a class="sourceLine" id="cb7-5" title="5">{</a>
+<a class="sourceLine" id="cb7-6" title="6">  s &lt;-<span class="st"> </span><span class="kw">ssh_connect</span>(<span class="st">&quot;p284074@peregrine.hpc.rug.nl&quot;</span>, <span class="dt">passwd =</span> password)</a>
+<a class="sourceLine" id="cb7-7" title="7">  rfiles &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="st">&quot;code&quot;</span>, <span class="dt">pattern =</span> <span class="st">&quot;.r&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb7-8" title="8">  <span class="kw">scp_upload</span>(s, rfiles, <span class="dt">to =</span> <span class="st">&quot;code/&quot;</span>)</a>
+<a class="sourceLine" id="cb7-9" title="9">  <span class="kw">ssh_disconnect</span>(s)</a>
+<a class="sourceLine" id="cb7-10" title="10">}</a>
+<a class="sourceLine" id="cb7-11" title="11"></a>
+<a class="sourceLine" id="cb7-12" title="12"><span class="co"># clear old speed estimates</span></a>
+<a class="sourceLine" id="cb7-13" title="13">{</a>
+<a class="sourceLine" id="cb7-14" title="14">  s &lt;-<span class="st"> </span><span class="kw">ssh_connect</span>(<span class="st">&quot;p284074@peregrine.hpc.rug.nl&quot;</span>, <span class="dt">passwd =</span> password)</a>
+<a class="sourceLine" id="cb7-15" title="15">  <span class="kw">ssh_exec_wait</span>(s, <span class="dt">command =</span> <span class="st">&quot;rm output/speed_estimates_2018.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb7-16" title="16">  <span class="kw">ssh_disconnect</span>(s)</a>
+<a class="sourceLine" id="cb7-17" title="17">}</a>
+<a class="sourceLine" id="cb7-18" title="18"></a>
+<a class="sourceLine" id="cb7-19" title="19"><span class="co"># execute tests</span></a>
+<a class="sourceLine" id="cb7-20" title="20"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(data_to_test)){</a>
+<a class="sourceLine" id="cb7-21" title="21">  </a>
+<a class="sourceLine" id="cb7-22" title="22">  scale &lt;-<span class="st"> </span>data_to_test<span class="op">$</span>scales[i]</a>
+<a class="sourceLine" id="cb7-23" title="23">  file &lt;-<span class="st"> </span>data_to_test<span class="op">$</span>data_files[i]</a>
+<a class="sourceLine" id="cb7-24" title="24">  id &lt;-<span class="st"> </span>data_to_test<span class="op">$</span>data_ids[i]</a>
+<a class="sourceLine" id="cb7-25" title="25">  <span class="co"># connect to peregrine</span></a>
+<a class="sourceLine" id="cb7-26" title="26">  s &lt;-<span class="st"> </span><span class="kw">ssh_connect</span>(<span class="st">&quot;p284074@peregrine.hpc.rug.nl&quot;</span>, <span class="dt">passwd =</span> password)</a>
+<a class="sourceLine" id="cb7-27" title="27">  <span class="co"># make directory if non-existent</span></a>
+<a class="sourceLine" id="cb7-28" title="28">  <span class="kw">ssh_exec_wait</span>(s, <span class="dt">command =</span> <span class="st">&quot;mkdir -p data/watlas&quot;</span>)</a>
 <a class="sourceLine" id="cb7-29" title="29">  </a>
-<a class="sourceLine" id="cb7-30" title="30">  <span class="co"># make job file</span></a>
-<a class="sourceLine" id="cb7-31" title="31">  {</a>
-<a class="sourceLine" id="cb7-32" title="32">    shebang &lt;-<span class="st"> </span><span class="kw">readLines</span>(<span class="st">&quot;code/template_job.sh&quot;</span>)</a>
-<a class="sourceLine" id="cb7-33" title="33">    </a>
-<a class="sourceLine" id="cb7-34" title="34">    <span class="co"># rename job</span></a>
-<a class="sourceLine" id="cb7-35" title="35">    shebang[<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">glue</span>(<span class="st">&#39;#SBATCH --job-name=ctmm_{file}&#39;</span>)</a>
-<a class="sourceLine" id="cb7-36" title="36">    </a>
-<a class="sourceLine" id="cb7-37" title="37">    text &lt;-<span class="st"> </span><span class="kw">glue</span>(<span class="st">&#39;Rscript code/code_test_ctmm_scale.r {file} {scale}&#39;</span>)</a>
-<a class="sourceLine" id="cb7-38" title="38">    jobfile &lt;-<span class="st"> </span><span class="kw">glue</span>(<span class="st">&#39;code/job_ctmm_{id}_{scale}.sh&#39;</span>)</a>
-<a class="sourceLine" id="cb7-39" title="39">    </a>
-<a class="sourceLine" id="cb7-40" title="40">    <span class="kw">writeLines</span>(<span class="kw">c</span>(shebang, text), <span class="dt">con =</span> jobfile)</a>
-<a class="sourceLine" id="cb7-41" title="41">    <span class="kw">scp_upload</span>(s, jobfile, <span class="dt">to =</span> <span class="st">&quot;code/&quot;</span>)</a>
-<a class="sourceLine" id="cb7-42" title="42">  }</a>
-<a class="sourceLine" id="cb7-43" title="43">  </a>
-<a class="sourceLine" id="cb7-44" title="44">  <span class="kw">ssh_exec_wait</span>(s, <span class="dt">command =</span> <span class="kw">glue</span>(<span class="st">&#39;dos2unix {jobfile}&#39;</span>))</a>
-<a class="sourceLine" id="cb7-45" title="45">  <span class="co"># process using ctmm</span></a>
-<a class="sourceLine" id="cb7-46" title="46">  <span class="kw">ssh_exec_wait</span>(s, <span class="dt">command =</span> <span class="kw">glue</span>(<span class="st">&#39;sbatch {jobfile}&#39;</span>))</a>
-<a class="sourceLine" id="cb7-47" title="47">  </a>
-<a class="sourceLine" id="cb7-48" title="48">  <span class="co"># disconnect</span></a>
-<a class="sourceLine" id="cb7-49" title="49">  <span class="kw">ssh_disconnect</span>(s)</a>
-<a class="sourceLine" id="cb7-50" title="50"></a>
-<a class="sourceLine" id="cb7-51" title="51">}</a>
-<a class="sourceLine" id="cb7-52" title="52">      <span class="co"># # ctmm section</span></a>
-<a class="sourceLine" id="cb7-53" title="53">      <span class="co"># {</span></a>
-<a class="sourceLine" id="cb7-54" title="54">      <span class="co">#   # get the outliers but do not plot</span></a>
-<a class="sourceLine" id="cb7-55" title="55">      <span class="co">#   outliers &lt;- map(tel, outlie, plot=FALSE)</span></a>
-<a class="sourceLine" id="cb7-56" title="56">      <span class="co">#   # get a list of 99 th percentile outliers</span></a>
-<a class="sourceLine" id="cb7-57" title="57">      <span class="co">#   q90 &lt;- map(outliers, function(this_outlier_set){</span></a>
-<a class="sourceLine" id="cb7-58" title="58">      <span class="co">#     quantile(this_outlier_set[[1]], probs = c(0.99))</span></a>
-<a class="sourceLine" id="cb7-59" title="59">      <span class="co">#   })</span></a>
-<a class="sourceLine" id="cb7-60" title="60">      <span class="co">#   # remove outliers from telemetry data</span></a>
-<a class="sourceLine" id="cb7-61" title="61">      <span class="co">#   tel &lt;- pmap(list(tel, outliers, q90), </span></a>
-<a class="sourceLine" id="cb7-62" title="62">      <span class="co">#               function(this_tel_obj, this_outlier_set, outlier_quantile) </span></a>
-<a class="sourceLine" id="cb7-63" title="63">      <span class="co">#               {this_tel_obj[-(which(this_outlier_set[[1]] &gt;= outlier_quantile)),]})</span></a>
-<a class="sourceLine" id="cb7-64" title="64">        </a>
-<a class="sourceLine" id="cb7-65" title="65">      <span class="co">#   # some patches have no data remaining, filter them out</span></a>
-<a class="sourceLine" id="cb7-66" title="66">      <span class="co">#   tel &lt;- keep(tel, function(this_tel){nrow(this_tel) &gt; 0})</span></a>
-<a class="sourceLine" id="cb7-67" title="67">        </a>
-<a class="sourceLine" id="cb7-68" title="68">      <span class="co">#   r_patches &lt;- length(tel)</span></a>
-<a class="sourceLine" id="cb7-69" title="69">      <span class="co"># }</span></a>
-<a class="sourceLine" id="cb7-70" title="70">      <span class="co"># ratio = r_patches/n_patches</span></a>
-<a class="sourceLine" id="cb7-71" title="71">      <span class="co"># message(ratio)</span></a>
-<a class="sourceLine" id="cb7-72" title="72">      <span class="co"># return(ratio)</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-30" title="30">  <span class="co"># list files already present</span></a>
+<a class="sourceLine" id="cb7-31" title="31">  files_on_prg &lt;-<span class="st"> </span><span class="kw">ssh_exec_internal</span>(s, <span class="dt">command =</span> <span class="st">&quot;ls data/watlas&quot;</span>)</a>
+<a class="sourceLine" id="cb7-32" title="32">  files_on_prg &lt;-<span class="st"> </span><span class="kw">rawToChar</span>(files_on_prg<span class="op">$</span>stdout) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-33" title="33"><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-34" title="34"><span class="st">    </span><span class="kw">unlist</span>()</a>
+<a class="sourceLine" id="cb7-35" title="35">  </a>
+<a class="sourceLine" id="cb7-36" title="36">  <span class="co"># check name</span></a>
+<a class="sourceLine" id="cb7-37" title="37">  data_name &lt;-<span class="st"> </span>file <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-38" title="38"><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;/&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-39" title="39"><span class="st">    </span><span class="kw">unlist</span>() <span class="op">%&gt;%</span><span class="st"> </span>.[<span class="dv">3</span>]</a>
+<a class="sourceLine" id="cb7-40" title="40">  </a>
+<a class="sourceLine" id="cb7-41" title="41">  <span class="cf">if</span>(<span class="op">!</span>data_name <span class="op">%in%</span><span class="st"> </span>files_on_prg){</a>
+<a class="sourceLine" id="cb7-42" title="42">    <span class="co"># upload data file for processing</span></a>
+<a class="sourceLine" id="cb7-43" title="43">    <span class="kw">scp_upload</span>(s, file, <span class="dt">to =</span> <span class="st">&quot;data/watlas&quot;</span>)</a>
+<a class="sourceLine" id="cb7-44" title="44">  }</a>
+<a class="sourceLine" id="cb7-45" title="45">  </a>
+<a class="sourceLine" id="cb7-46" title="46">  <span class="co"># make job file</span></a>
+<a class="sourceLine" id="cb7-47" title="47">  {</a>
+<a class="sourceLine" id="cb7-48" title="48">    shebang &lt;-<span class="st"> </span><span class="kw">readLines</span>(<span class="st">&quot;code/template_job.sh&quot;</span>)</a>
+<a class="sourceLine" id="cb7-49" title="49">    </a>
+<a class="sourceLine" id="cb7-50" title="50">    <span class="co"># rename job</span></a>
+<a class="sourceLine" id="cb7-51" title="51">    shebang[<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">glue</span>(<span class="st">&#39;#SBATCH --job-name=ctmm_{file}&#39;</span>)</a>
+<a class="sourceLine" id="cb7-52" title="52">    </a>
+<a class="sourceLine" id="cb7-53" title="53">    text &lt;-<span class="st"> </span><span class="kw">glue</span>(<span class="st">&#39;Rscript --vanilla code/code_test_ctmm_scale.r {file} {scale}&#39;</span>)</a>
+<a class="sourceLine" id="cb7-54" title="54">    jobfile &lt;-<span class="st"> </span><span class="kw">glue</span>(<span class="st">&#39;code/job_ctmm_{id}_{scale}.sh&#39;</span>)</a>
+<a class="sourceLine" id="cb7-55" title="55">    </a>
+<a class="sourceLine" id="cb7-56" title="56">    <span class="kw">writeLines</span>(<span class="kw">c</span>(shebang, text), <span class="dt">con =</span> jobfile)</a>
+<a class="sourceLine" id="cb7-57" title="57">    <span class="kw">scp_upload</span>(s, jobfile, <span class="dt">to =</span> <span class="st">&quot;code/&quot;</span>)</a>
+<a class="sourceLine" id="cb7-58" title="58">  }</a>
+<a class="sourceLine" id="cb7-59" title="59">  </a>
+<a class="sourceLine" id="cb7-60" title="60">  <span class="kw">ssh_exec_wait</span>(s, <span class="dt">command =</span> <span class="kw">glue</span>(<span class="st">&#39;dos2unix {jobfile}&#39;</span>))</a>
+<a class="sourceLine" id="cb7-61" title="61">  <span class="co"># process using ctmm</span></a>
+<a class="sourceLine" id="cb7-62" title="62">  <span class="kw">ssh_exec_wait</span>(s, <span class="dt">command =</span> <span class="kw">glue</span>(<span class="st">&#39;sbatch {jobfile}&#39;</span>))</a>
+<a class="sourceLine" id="cb7-63" title="63">  </a>
+<a class="sourceLine" id="cb7-64" title="64">  <span class="co"># disconnect</span></a>
+<a class="sourceLine" id="cb7-65" title="65">  <span class="kw">ssh_disconnect</span>(s)</a>
+<a class="sourceLine" id="cb7-66" title="66">  </a>
+<a class="sourceLine" id="cb7-67" title="67">}</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="co"># access data from cluster</span></a>
+<a class="sourceLine" id="cb8-2" title="2">{</a>
+<a class="sourceLine" id="cb8-3" title="3">  s &lt;-<span class="st"> </span><span class="kw">ssh_connect</span>(<span class="st">&quot;p284074@peregrine.hpc.rug.nl&quot;</span>, <span class="dt">passwd =</span> password)</a>
+<a class="sourceLine" id="cb8-4" title="4">  <span class="kw">scp_download</span>(s, <span class="dt">files =</span> <span class="st">&quot;output/speed_estimates_2018.csv&quot;</span>, <span class="dt">to =</span> <span class="st">&quot;data/mod_output/&quot;</span>)</a>
+<a class="sourceLine" id="cb8-5" title="5">  <span class="kw">ssh_disconnect</span>(s)</a>
+<a class="sourceLine" id="cb8-6" title="6">}</a>
+<a class="sourceLine" id="cb8-7" title="7"></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="co"># read data and process for plotting</span></a>
+<a class="sourceLine" id="cb8-9" title="9">{</a>
+<a class="sourceLine" id="cb8-10" title="10">  data &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/mod_output/speed_estimates_2018.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb8-11" title="11">  data &lt;-<span class="st"> </span><span class="kw">setDF</span>(data) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-12" title="12"><span class="st">    </span><span class="kw">rename</span>(<span class="dt">mean =</span> est) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-13" title="13"><span class="st">    </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">c</span>(low, mean, high),</a>
+<a class="sourceLine" id="cb8-14" title="14">                       <span class="dt">names_to =</span> <span class="st">&quot;estimate&quot;</span>, <span class="dt">values_to =</span> <span class="st">&quot;speed&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-15" title="15"><span class="st">    </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.infinite</span>(speed)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-16" title="16"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">estimate =</span> <span class="kw">as.factor</span>(estimate),</a>
+<a class="sourceLine" id="cb8-17" title="17">           <span class="dt">estimate =</span> <span class="kw">fct_relevel</span>(estimate, <span class="st">&quot;low&quot;</span>, <span class="st">&quot;mean&quot;</span>, <span class="st">&quot;high&quot;</span>))</a>
+<a class="sourceLine" id="cb8-18" title="18">}</a>
+<a class="sourceLine" id="cb8-19" title="19"></a>
+<a class="sourceLine" id="cb8-20" title="20"><span class="co"># plot data as lines</span></a>
+<a class="sourceLine" id="cb8-21" title="21">fig_compare_ctmm &lt;-<span class="st"> </span><span class="kw">ggplot</span>(data)<span class="op">+</span></a>
+<a class="sourceLine" id="cb8-22" title="22"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x =</span> scale, <span class="dt">y =</span> speed, <span class="dt">group =</span> <span class="kw">interaction</span>(id, tide_number),</a>
+<a class="sourceLine" id="cb8-23" title="23">                <span class="dt">col =</span> <span class="kw">factor</span>(estimate)), <span class="dt">size =</span> <span class="fl">0.1</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb8-24" title="24"><span class="st">  </span></a>
+<a class="sourceLine" id="cb8-25" title="25"><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> scale, <span class="dt">y =</span> speed, <span class="dt">group =</span> <span class="kw">interaction</span>(scale),</a>
+<a class="sourceLine" id="cb8-26" title="26">                <span class="dt">col =</span> <span class="kw">factor</span>(estimate)), <span class="dt">size =</span> <span class="fl">0.3</span>, <span class="dt">notch =</span> F, </a>
+<a class="sourceLine" id="cb8-27" title="27">               <span class="dt">fill =</span> <span class="st">&quot;grey90&quot;</span>, <span class="dt">alpha=</span> <span class="fl">0.5</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb8-28" title="28"><span class="st">  </span><span class="kw">facet_grid</span>(id<span class="op">~</span>estimate, <span class="dt">labeller =</span> label_both)<span class="op">+</span></a>
+<a class="sourceLine" id="cb8-29" title="29"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">15</span>,<span class="dv">30</span>,<span class="dv">60</span>))<span class="op">+</span></a>
+<a class="sourceLine" id="cb8-30" title="30"><span class="st">  </span><span class="kw">scale_colour_scico_d</span>(<span class="dt">palette =</span> <span class="st">&quot;berlin&quot;</span>, <span class="dt">begin =</span> <span class="fl">0.2</span>, <span class="dt">end =</span> <span class="fl">0.8</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb8-31" title="31"><span class="st">  </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">10</span>))<span class="op">+</span></a>
+<a class="sourceLine" id="cb8-32" title="32"><span class="st">  </span><span class="kw">theme_few</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb8-33" title="33"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb8-34" title="34"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;aggregation interval (s)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;mean speed (m/s) foraging period&quot;</span>)</a>
+<a class="sourceLine" id="cb8-35" title="35"></a>
+<a class="sourceLine" id="cb8-36" title="36"><span class="co"># save figure</span></a>
+<a class="sourceLine" id="cb8-37" title="37"><span class="kw">ggsave</span>(fig_compare_ctmm, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_compare_scale.png&quot;</span>, <span class="dt">height =</span> <span class="dv">5</span>, <span class="dt">width =</span> <span class="dv">8</span>, <span class="dt">dpi=</span><span class="dv">300</span>)</a>
+<a class="sourceLine" id="cb8-38" title="38"><span class="kw">dev.off</span>()</a></code></pre></div>
 
 </div>
 </div>
