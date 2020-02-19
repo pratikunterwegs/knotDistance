@@ -15,6 +15,12 @@ library(sf)
 library(glue)
 library(stringr)
 
+# define globals
+tide_duration <- 4
+tide_quality <- 0.5
+tide_hr_start <- 4
+tide_hr_end <- 10
+
 test_ctmm_scale <- function(datafile, scale){
   
   # load raw data
@@ -48,13 +54,27 @@ test_ctmm_scale <- function(datafile, scale){
     # add tide data
     data <- wat_add_tide(df = data,
                          tide_data = "data/tidesSummer2018.csv")
+
+    # filter for low tide
+    data <- setDT(data)
+    data <- data[between(tidaltime, tide_hr_start*60, tide_hr_end*60),]
+  }
+
+  # implement quality filters
+  {
+    data_summary <- data[,.(duration = (max(time) - min(time))/60,
+                            prop_fixes = length(x) / ((max(time) - min(time))/3)),
+                          by = .(tide_number)]
+    data_summary <- data_summary[duration >= tide_duration & prop_fixes >= tide_quality,]
+
+    data <- data[tide_number %in% data_summary$tide_number,]
   }
   
   # prepare for telemetry
   {
     data_for_ctmm <- setDT(data)[,.(id, tide_number, x, y, time, VARX, VARY)]
 
-    # aggregate within a patch to 10 seconds
+    # aggregate within a tide to `scale` seconds
     data_for_ctmm <- split(data_for_ctmm, f = data_for_ctmm$tide_number) %>%
       map(wat_agg_data, interval = scale) %>%
       bind_rows()
@@ -119,8 +139,19 @@ test_ctmm_scale <- function(datafile, scale){
     {
       dir.create("mod_output")
     }
-    writeLines(R.utils::captureOutput(map(mod, speed, units = FALSE)), 
-               con = as.character(glue('mod_output/ctmm_{id_data}_{scale}.txt')))
+    
+    # get speed estimates with id, tide, and scale
+    speed_est <- map(mod, function(model) as.data.table(speed(model, units=FALSE)))
+    speed_est <- data.table::rbindlist(speed_est)
+    speed_est[,`:=`(id = id_data,
+                    scale = scale,
+                    tide_number = substring(names(mod), 
+                                            regexpr("_", names(mod)) + 1, 
+                                            nchar(names(mod))))]
+    
+    # write data
+    fwrite(speed_est, file = "output/speed_estimates_2018.csv", append = TRUE)
+    
     # save the models
     save(mod, file = as.character(glue('output/mods/ctmm_{id_data}_{scale}.rdata')))
   }
@@ -128,7 +159,7 @@ test_ctmm_scale <- function(datafile, scale){
   # check model fit
   {
     png(filename = as.character(glue('output/figs/vg_ctmm_{id_data}_{scale}_seconds.png')),
-        height = 800, width = 1600, type = "cairo")
+        height = 1600, width = 1600, type = "cairo")
     {
       par(mfrow=c(10, ceiling(length(mod)/ 10)), mar = c(1,1,1,1))
       for(i in 1:length(mod))

@@ -24,7 +24,7 @@
 <meta name="author" content="Pratik R Gupte" />
 
 
-<meta name="date" content="2020-02-15" />
+<meta name="date" content="2020-02-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -180,7 +180,7 @@ Finally, we output the fitted models and their summaries as <code>.Rdata</code> 
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># watlasUtils assumed installed from the previous step</span></a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="co"># if not, install from the github repo as shown below</span></a>
 <a class="sourceLine" id="cb1-3" title="3"></a>
-<a class="sourceLine" id="cb1-4" title="4">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;pratikunterwegs/watlasUtils&quot;</span>, <span class="dt">ref=</span><span class="st">&quot;devbranch&quot;</span>)</a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="co"># devtools::install_github(&quot;pratikunterwegs/watlasUtils&quot;, ref=&quot;devbranch&quot;)</span></a>
 <a class="sourceLine" id="cb1-5" title="5"><span class="kw">library</span>(watlasUtils)</a>
 <a class="sourceLine" id="cb1-6" title="6"></a>
 <a class="sourceLine" id="cb1-7" title="7"><span class="co"># libraries to process data</span></a>
@@ -215,10 +215,14 @@ Finally, we output the fitted models and their summaries as <code>.Rdata</code> 
 <a class="sourceLine" id="cb2-17" title="17">                                     <span class="dt">format =</span> <span class="st">&quot;%d.%m.%y %H:%M&quot;</span>, <span class="dt">tz =</span> <span class="st">&quot;CET&quot;</span>)]</a>
 <a class="sourceLine" id="cb2-18" title="18"></a>
 <a class="sourceLine" id="cb2-19" title="19"><span class="co"># sub for knots in data</span></a>
-<a class="sourceLine" id="cb2-20" title="20">data_files &lt;-<span class="st"> </span>data_files[<span class="kw">as.integer</span>(data_ids) <span class="op">%in%</span><span class="st"> </span>tag_info<span class="op">$</span>Toa_Tag][<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb2-20" title="20">data_files &lt;-<span class="st"> </span>data_files[<span class="kw">as.integer</span>(data_ids) <span class="op">%in%</span><span class="st"> </span>tag_info<span class="op">$</span>Toa_Tag]</a>
 <a class="sourceLine" id="cb2-21" title="21"></a>
-<a class="sourceLine" id="cb2-22" title="22"><span class="co"># add tide data</span></a>
-<a class="sourceLine" id="cb2-23" title="23">tides_<span class="dv">2018</span> &lt;-<span class="st"> &quot;data/tidesSummer2018.csv&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-22" title="22"><span class="co"># subset for test</span></a>
+<a class="sourceLine" id="cb2-23" title="23">data_files &lt;-<span class="st"> </span>data_files[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb2-24" title="24">data_ids &lt;-<span class="st"> </span><span class="kw">str_extract</span>(data_files, <span class="st">&quot;(tx_</span><span class="ch">\\</span><span class="st">d+)&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_sub</span>(<span class="op">-</span><span class="dv">3</span>,<span class="op">-</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb2-25" title="25"></a>
+<a class="sourceLine" id="cb2-26" title="26"><span class="co"># add tide data</span></a>
+<a class="sourceLine" id="cb2-27" title="27">tides_<span class="dv">2018</span> &lt;-<span class="st"> &quot;data/tidesSummer2018.csv&quot;</span></a></code></pre></div>
 </div>
 <div id="read-clean-and-write-data" class="section level2">
 <h2><span class="header-section-number">2.3</span> Read, clean, and write data</h2>
