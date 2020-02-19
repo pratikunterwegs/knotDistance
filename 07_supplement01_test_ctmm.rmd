@@ -132,7 +132,7 @@ for(i in 1:nrow(data_to_test)){
 }
 ```
 
-```{r get_speed_estimates, eval=FALSE}
+```{r get_speed_estimates_supp, eval=FALSE}
 # access data from cluster
 {
   s <- ssh_connect("p284074@peregrine.hpc.rug.nl", passwd = password)
@@ -175,8 +175,14 @@ ggsave(fig_compare_ctmm, filename = "figs/fig_compare_scale.png", height = 5, wi
 dev.off()
 ```
 
+```{r show_fig_compare_scale, eval=TRUE, fig.cap="Effect of aggregation scale on CTMM speed estimates, using 2 individual red knots over all tidal cycles in which they were tracked, and which satisfied quality criteria."}
 
-```{r fig_speed_quality}
+knitr::include_graphics("figs/fig_compare_scale.png")
+
+```
+
+
+```{r fig_speed_quality, eval=FALSE}
 # figure speed estimate ~ quality
 fig_speed_quality <-
   ggplot(data %>% filter(speed <= 5))+
@@ -200,5 +206,11 @@ fig_speed_quality <-
 # save figure
 ggsave(fig_speed_quality, filename = "figs/fig_speed_quality.png", height = 5, width = 8, dpi=300)
 dev.off()
+```
+
+```{r show_fig_compare_qual, eval=TRUE, fig.cap="Effect of proportion of positions realised on CTMM speed estimates."}
+
+knitr::include_graphics("figs/fig_speed_quality.png")
+
 ```
 
