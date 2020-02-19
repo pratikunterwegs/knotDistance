@@ -12,23 +12,17 @@ Here, we examine the effect of different aggregation scales on CTMM fits and spe
 ```{r load_libs_supp_01, eval=FALSE}
 # load libs
 library(data.table)
-library(lubridate)
-library(sf)
 library(glue)
 library(stringr)
-library(fasttime)
 library(tibble)
 library(dplyr)
-library(purrr)
 library(tidyr)
-
-# devtools::install_github("pratikunterwegs/watlasUtils", ref = "devbranch")
-library(watlasUtils)
-library(ctmm)
+library(forcats)
 
 # plot libs
 library(ggplot2)
 library(ggthemes)
+library(scico)
 
 # ssh func
 library(ssh)
@@ -148,8 +142,10 @@ for(i in 1:nrow(data_to_test)){
 
 # read data and process for plotting
 {
-  data <- fread("data/mod_output/speed_estimates_2018.csv")
-  data <- setDF(data) %>% as_tibble() %>% 
+  data <- fread("data/mod_output/speed_estimates_2018.csv", fill = T)
+  data <- setDF(data) %>% 
+    as_tibble() %>% 
+    filter(!is.na(id)) %>% 
     rename(mean = est) %>% 
     pivot_longer(cols = c(low, mean, high),
                        names_to = "estimate", values_to = "speed") %>% 
@@ -160,7 +156,7 @@ for(i in 1:nrow(data_to_test)){
 
 # plot data as lines
 fig_compare_ctmm <- ggplot(data)+
-  geom_line(aes(x = scale, y = speed, group = interaction(id, tide_number),
+  geom_line(aes(x = tide_number, y = speed, group = interaction(id, tide_number),
                 col = factor(estimate)), size = 0.1)+
   
   geom_boxplot(aes(x = scale, y = speed, group = interaction(scale),

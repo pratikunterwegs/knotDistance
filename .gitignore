@@ -44,3 +44,5 @@ data/*
 private/*
 jobs/
 figs/*.rdata
+vg_ctmm*
+job_ctmm*
