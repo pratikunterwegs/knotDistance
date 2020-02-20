@@ -233,5 +233,7 @@ knitr::include_graphics("figs/fig_speed_quality.png")
   ssh_disconnect(s)
 }
 
+# list rdata files
+model_files <- list.files("data/mod_output/mods/", full.names = TRUE)
 ```
 
