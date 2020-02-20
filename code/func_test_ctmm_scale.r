@@ -160,7 +160,7 @@ test_ctmm_scale <- function(datafile, scale){
 
     # save speeds
     inst_speeds <- map2(tel, mod, function(obj_tel, ctmm_mod){
-      speeds(data=obj_tel, CTMM=ctmm_mod)
+      speeds(object=obj_tel, CTMM=ctmm_mod)
     })
     save(inst_speeds, file = as.character(glue('output/mods/speeds_{id_data}_{scale}.rdata')))
 
