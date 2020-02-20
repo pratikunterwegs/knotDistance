@@ -157,6 +157,13 @@ test_ctmm_scale <- function(datafile, scale){
     
     # save the models
     save(mod, file = as.character(glue('output/mods/ctmm_{id_data}_{scale}.rdata')))
+
+    # save speeds
+    inst_speeds <- map2(tel, mod, function(obj_tel, ctmm_mod){
+      speeds(data=tel, CTMM=mod)
+    })
+    save(inst_speeds, file = as.character(glue('output/mods/speeds_{id_data}_{scale}.rdata')))
+
   }
   
   # check model fit
