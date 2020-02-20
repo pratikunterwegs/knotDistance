@@ -74,6 +74,8 @@ data_to_test <- crossing(scales, nesting(data_files, data_ids))
 rm(scales, data_files)
 ```
 
+## Transfer data and jobs to cluster
+
 ```{r send_data, eval=FALSE}
 # read password
 password = fread("data/password.txt")$password
@@ -144,6 +146,7 @@ for(i in 1:nrow(data_to_test)){
 }
 ```
 
+## Access data from cluster
 
 ```{r get_speed_estimates, eval=FALSE}
 # access data from cluster
@@ -166,9 +169,13 @@ for(i in 1:nrow(data_to_test)){
     mutate(estimate = as.factor(estimate),
            estimate = fct_relevel(estimate, "low", "mean", "high"))
 }
+```
 
+## Plot speeds over tides
+
+```{r plot_speed_tide, eval=FALSE}
 # plot data as lines
-# fig_speed_tide <- 
+fig_speed_tide <- 
   ggplot(data)+
   geom_jitter(aes(x = tide_number, y = speed, group = id,
                 col = factor(estimate)), size = 0.1, alpha = 0.5)+
@@ -185,6 +192,6 @@ for(i in 1:nrow(data_to_test)){
   labs(x = "tidal cycle (#)", y = "mean speed (m/s) foraging period")
 
 # save figure
-ggsave(fig_compare_ctmm, filename = "figs/fig_compare_scale.png", height = 5, width = 8, dpi=300)
+ggsave(fig_speed_tide, filename = "figs/fig_speed_tide.png", height = 5, width = 8, dpi=300)
 dev.off()
 ```
