@@ -62,6 +62,8 @@ data_to_test <- crossing(scales, nesting(data_files, data_ids))
 rm(scales, data_files)
 ```
 
+## Transfer data and process on cluster
+
 ```{r count_patches_remaining, eval=FALSE}
 # read password
 password = fread("data/password.txt")$password
@@ -132,6 +134,8 @@ for(i in 1:nrow(data_to_test)){
 }
 ```
 
+## Get speed estimates from cluster
+
 ```{r get_speed_estimates_supp, eval=FALSE}
 # access data from cluster
 {
@@ -153,7 +157,11 @@ for(i in 1:nrow(data_to_test)){
     mutate(estimate = as.factor(estimate),
            estimate = fct_relevel(estimate, "low", "mean", "high"))
 }
+```
 
+### Plot speed at different scales
+
+```{r fig_compare_ctmm, eval=FALSE}
 # plot data as lines
 fig_compare_ctmm <- ggplot(data)+
   geom_line(aes(x = tide_number, y = speed, group = interaction(id, tide_number),
@@ -181,6 +189,7 @@ knitr::include_graphics("figs/fig_compare_scale.png")
 
 ```
 
+### Plot speed in relation to proportion of positions
 
 ```{r fig_speed_quality, eval=FALSE}
 # figure speed estimate ~ quality
@@ -211,6 +220,18 @@ dev.off()
 ```{r show_fig_compare_qual, eval=TRUE, fig.cap="Effect of proportion of positions realised on CTMM speed estimates."}
 
 knitr::include_graphics("figs/fig_speed_quality.png")
+
+```
+
+## Get models as `.Rdata` objects
+
+```{r get_rdata, eval=FALSE}
+# download model data folder
+{
+  s <- ssh_connect("p284074@peregrine.hpc.rug.nl", passwd = password)
+  scp_download(s, files = "output/mods", to = "data/mod_output/")
+  ssh_disconnect(s)
+}
 
 ```
 
