@@ -154,30 +154,44 @@ test_ctmm_scale <- function(datafile, scale){
       dir.create("mod_output")
     }
     
-    # get speed estimates with id, tide, and scale
-    speed_est <- map(mod, function(model) as.data.table(speed(model, units=FALSE)))
-    speed_est <- data.table::rbindlist(speed_est)
-    speed_est[,`:=`(id = id_data,
-                    scale = scale,
-                    tide_number = as.numeric(substring(names(mod), 
-                                                       regexpr("_", names(mod)) + 1, 
-                                                       nchar(names(mod)))))]
+    {
+      # get speed estimates with id, tide, and scale
+      speed_est <- map(mod, function(model) as.data.table(speed(model, units=FALSE)))
+      speed_est <- data.table::rbindlist(speed_est)
+      speed_est[,`:=`(id = id_data,
+                      scale = scale,
+                      tide_number = as.numeric(substring(names(mod), 
+                                                         regexpr("_", names(mod)) + 1, 
+                                                         nchar(names(mod)))))]
+      
+      # add tide quality checks
+      speed_est <- merge(speed_est, data_summary, by = "tide_number")
+      # write data
+      fwrite(speed_est, file = "output/speed_estimates_2018.csv", append = TRUE)
+      # save the models
+      save(mod, file = as.character(glue('output/mods/ctmm_{id_data}_{scale}.rdata')))
+    }
     
-    # add tide quality checks
-    speed_est <- merge(speed_est, data_summary, by = "tide_number")
-    
-    # write data
-    fwrite(speed_est, file = "output/speed_estimates_2018.csv", append = TRUE)
-    
-    # save the models
-    save(mod, file = as.character(glue('output/mods/ctmm_{id_data}_{scale}.rdata')))
-    
-    # save speeds
-    inst_speeds <- map2(tel, mod, function(obj_tel, ctmm_mod){
-      speeds(object=obj_tel, CTMM=ctmm_mod)
-    })
-    save(inst_speeds, file = as.character(glue('output/mods/speeds_{id_data}_{scale}.rdata')))
-    
+    {
+      # filter data for ctmm based on speed estimate data
+      setDT(data)[,.(id, tide_number, x, y, time, VARX, VARY)]
+      data <- data[tide_number %in% speed_est$tide_number,]
+      data <- setDF(data) %>% 
+        group_by(tide_number) %>% 
+        group_split() %>% 
+        map(wat_agg_data, interval = scale) %>% 
+        bind_rows() %>% 
+        ungroup()
+      # get speeds
+      inst_speeds <- map2_df(tel, mod, function(obj_tel, ctmm_mod){
+        speeds_ <- speeds(object=obj_tel, CTMM=ctmm_mod)
+      })
+      # join speed to data
+      data <- left_join(data, inst_speeds, by = c("time" = "t"))
+      # write data
+      fwrite(data, file = as.character(glue('output/mods/speeds_{id_data}_{scale}.csv')))
+      #save(inst_speeds, file = as.character(glue('output/mods/speeds_{id_data}_{scale}.rdata')))
+    }    
   }
   
   # check model fit
