@@ -38,7 +38,9 @@ test_ctmm_scale <- function(datafile, scale){
       id_rel <- reldate[id == id_data, Release_Date]
       id_rel <- as.numeric(id_rel)
     },
-    error = function(e) {message("could not find id in release data")}
+    error = function(e) {
+      message(glue("could not find id {id_data} in release data"))
+    }
     )
     
     # filter out the first 24 hours since release
@@ -85,9 +87,11 @@ test_ctmm_scale <- function(datafile, scale){
     data_for_ctmm <- setDT(data)[,.(id, tide_number, x, y, time, VARX, VARY)]
     
     # aggregate within a tide to `scale` seconds
-    data_for_ctmm <- split(data_for_ctmm, f = data_for_ctmm$tide_number) %>%
+    data_for_ctmm <- group_by(data_for_ctmm, tide_number) %>%
+      group_split() %>% # use experimental group split function
       map(wat_agg_data, interval = scale) %>%
-      bind_rows()
+      bind_rows() %>% 
+      ungroup()
     
     # make each tidal cycle an indiv
     setDT(data_for_ctmm)
