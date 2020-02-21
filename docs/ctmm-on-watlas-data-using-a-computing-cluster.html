@@ -24,7 +24,7 @@
 <meta name="author" content="Pratik R Gupte" />
 
 
-<meta name="date" content="2020-02-19" />
+<meta name="date" content="2020-02-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -136,11 +136,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html"><i class="fa fa-check"></i><b>2</b> CTMM on WATLAS data using a computing cluster</a><ul>
 <li class="chapter" data-level="2.1" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#load-prelim-data"><i class="fa fa-check"></i><b>2.1</b> Load prelim data</a></li>
 <li class="chapter" data-level="2.2" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#choose-scales-of-aggregation"><i class="fa fa-check"></i><b>2.2</b> Choose scales of aggregation</a></li>
+<li class="chapter" data-level="2.3" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#transfer-data-and-jobs-to-cluster"><i class="fa fa-check"></i><b>2.3</b> Transfer data and jobs to cluster</a></li>
+<li class="chapter" data-level="2.4" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#access-data-from-cluster"><i class="fa fa-check"></i><b>2.4</b> Access data from cluster</a></li>
+<li class="chapter" data-level="2.5" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#plot-speeds-over-tides"><i class="fa fa-check"></i><b>2.5</b> Plot speeds over tides</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html"><i class="fa fa-check"></i><b>3</b> Applying CTMM to WATLAS data</a><ul>
 <li class="chapter" data-level="3.1" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#load-libraries"><i class="fa fa-check"></i><b>3.1</b> Load libraries</a></li>
 <li class="chapter" data-level="3.2" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#load-prelim-data-1"><i class="fa fa-check"></i><b>3.2</b> Load prelim data</a></li>
 <li class="chapter" data-level="3.3" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#choose-scales-of-aggregation-1"><i class="fa fa-check"></i><b>3.3</b> Choose scales of aggregation</a></li>
+<li class="chapter" data-level="3.4" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#transfer-data-and-process-on-cluster"><i class="fa fa-check"></i><b>3.4</b> Transfer data and process on cluster</a></li>
+<li class="chapter" data-level="3.5" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#get-speed-estimates-from-cluster"><i class="fa fa-check"></i><b>3.5</b> Get speed estimates from cluster</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#plot-speed-at-different-scales"><i class="fa fa-check"></i><b>3.5.1</b> Plot speed at different scales</a></li>
+<li class="chapter" data-level="3.5.2" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#plot-speed-in-relation-to-proportion-of-positions"><i class="fa fa-check"></i><b>3.5.2</b> Plot speed in relation to proportion of positions</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#get-instantaneous-speed-estimates"><i class="fa fa-check"></i><b>3.6</b> Get instantaneous speed estimates</a></li>
 </ul></li>
 </ul>
 
@@ -218,6 +227,9 @@ Finally, we output the fitted models and their summaries as <code>.Rdata</code> 
 <a class="sourceLine" id="cb3-2" title="2"></a>
 <a class="sourceLine" id="cb3-3" title="3">data_to_test &lt;-<span class="st"> </span><span class="kw">crossing</span>(scales, <span class="kw">nesting</span>(data_files, data_ids))</a>
 <a class="sourceLine" id="cb3-4" title="4"><span class="kw">rm</span>(scales, data_files)</a></code></pre></div>
+</div>
+<div id="transfer-data-and-jobs-to-cluster" class="section level2">
+<h2><span class="header-section-number">2.3</span> Transfer data and jobs to cluster</h2>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># read password</span></a>
 <a class="sourceLine" id="cb4-2" title="2">password =<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/password.txt&quot;</span>)<span class="op">$</span>password</a>
 <a class="sourceLine" id="cb4-3" title="3"></a>
@@ -285,6 +297,9 @@ Finally, we output the fitted models and their summaries as <code>.Rdata</code> 
 <a class="sourceLine" id="cb4-65" title="65">  <span class="kw">ssh_disconnect</span>(s)</a>
 <a class="sourceLine" id="cb4-66" title="66">  </a>
 <a class="sourceLine" id="cb4-67" title="67">}</a></code></pre></div>
+</div>
+<div id="access-data-from-cluster" class="section level2">
+<h2><span class="header-section-number">2.4</span> Access data from cluster</h2>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># access data from cluster</span></a>
 <a class="sourceLine" id="cb5-2" title="2">{</a>
 <a class="sourceLine" id="cb5-3" title="3">  s &lt;-<span class="st"> </span><span class="kw">ssh_connect</span>(<span class="st">&quot;p284074@peregrine.hpc.rug.nl&quot;</span>, <span class="dt">passwd =</span> password)</a>
@@ -304,28 +319,30 @@ Finally, we output the fitted models and their summaries as <code>.Rdata</code> 
 <a class="sourceLine" id="cb5-17" title="17"><span class="st">    </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.infinite</span>(speed)) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb5-18" title="18"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">estimate =</span> <span class="kw">as.factor</span>(estimate),</a>
 <a class="sourceLine" id="cb5-19" title="19">           <span class="dt">estimate =</span> <span class="kw">fct_relevel</span>(estimate, <span class="st">&quot;low&quot;</span>, <span class="st">&quot;mean&quot;</span>, <span class="st">&quot;high&quot;</span>))</a>
-<a class="sourceLine" id="cb5-20" title="20">}</a>
-<a class="sourceLine" id="cb5-21" title="21"></a>
-<a class="sourceLine" id="cb5-22" title="22"><span class="co"># plot data as lines</span></a>
-<a class="sourceLine" id="cb5-23" title="23"><span class="co"># fig_speed_tide &lt;- </span></a>
-<a class="sourceLine" id="cb5-24" title="24">  <span class="kw">ggplot</span>(data)<span class="op">+</span></a>
-<a class="sourceLine" id="cb5-25" title="25"><span class="st">  </span><span class="kw">geom_jitter</span>(<span class="kw">aes</span>(<span class="dt">x =</span> tide_number, <span class="dt">y =</span> speed, <span class="dt">group =</span> id,</a>
-<a class="sourceLine" id="cb5-26" title="26">                <span class="dt">col =</span> <span class="kw">factor</span>(estimate)), <span class="dt">size =</span> <span class="fl">0.1</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb5-27" title="27"><span class="st">  </span></a>
-<a class="sourceLine" id="cb5-28" title="28"><span class="st">  </span><span class="co"># geom_boxplot(aes(x = scale, y = speed, group = interaction(scale),</span></a>
-<a class="sourceLine" id="cb5-29" title="29"><span class="st">  </span><span class="co">#               col = factor(estimate)), size = 0.3, notch = F, </span></a>
-<a class="sourceLine" id="cb5-30" title="30"><span class="st">  </span><span class="co">#              fill = &quot;grey90&quot;, alpha= 0.5)+</span></a>
-<a class="sourceLine" id="cb5-31" title="31"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>estimate, <span class="dt">labeller =</span> label_both, <span class="dt">ncol =</span> <span class="dv">1</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb5-32" title="32"><span class="st">  </span><span class="co"># scale_x_continuous(breaks = c(15,30,60))+</span></a>
-<a class="sourceLine" id="cb5-33" title="33"><span class="st">  </span><span class="kw">scale_colour_scico_d</span>(<span class="dt">palette =</span> <span class="st">&quot;berlin&quot;</span>, <span class="dt">begin =</span> <span class="fl">0.2</span>, <span class="dt">end =</span> <span class="fl">0.8</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb5-34" title="34"><span class="st">  </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">5</span>))<span class="op">+</span></a>
-<a class="sourceLine" id="cb5-35" title="35"><span class="st">  </span><span class="kw">theme_few</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb5-36" title="36"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb5-37" title="37"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;tidal cycle (#)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;mean speed (m/s) foraging period&quot;</span>)</a>
-<a class="sourceLine" id="cb5-38" title="38"></a>
-<a class="sourceLine" id="cb5-39" title="39"><span class="co"># save figure</span></a>
-<a class="sourceLine" id="cb5-40" title="40"><span class="kw">ggsave</span>(fig_compare_ctmm, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_compare_scale.png&quot;</span>, <span class="dt">height =</span> <span class="dv">5</span>, <span class="dt">width =</span> <span class="dv">8</span>, <span class="dt">dpi=</span><span class="dv">300</span>)</a>
-<a class="sourceLine" id="cb5-41" title="41"><span class="kw">dev.off</span>()</a></code></pre></div>
+<a class="sourceLine" id="cb5-20" title="20">}</a></code></pre></div>
+</div>
+<div id="plot-speeds-over-tides" class="section level2">
+<h2><span class="header-section-number">2.5</span> Plot speeds over tides</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co"># plot data as lines</span></a>
+<a class="sourceLine" id="cb6-2" title="2">fig_speed_tide &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>(data)<span class="op">+</span></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="st">  </span><span class="kw">geom_jitter</span>(<span class="kw">aes</span>(<span class="dt">x =</span> tide_number, <span class="dt">y =</span> speed, <span class="dt">group =</span> id,</a>
+<a class="sourceLine" id="cb6-5" title="5">                <span class="dt">col =</span> <span class="kw">factor</span>(estimate)), <span class="dt">size =</span> <span class="fl">0.1</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="st">  </span></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="st">  </span><span class="co"># geom_boxplot(aes(x = scale, y = speed, group = interaction(scale),</span></a>
+<a class="sourceLine" id="cb6-8" title="8"><span class="st">  </span><span class="co">#               col = factor(estimate)), size = 0.3, notch = F, </span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="st">  </span><span class="co">#              fill = &quot;grey90&quot;, alpha= 0.5)+</span></a>
+<a class="sourceLine" id="cb6-10" title="10"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>estimate, <span class="dt">labeller =</span> label_both, <span class="dt">ncol =</span> <span class="dv">1</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="st">  </span><span class="co"># scale_x_continuous(breaks = c(15,30,60))+</span></a>
+<a class="sourceLine" id="cb6-12" title="12"><span class="st">  </span><span class="kw">scale_colour_scico_d</span>(<span class="dt">palette =</span> <span class="st">&quot;berlin&quot;</span>, <span class="dt">begin =</span> <span class="fl">0.2</span>, <span class="dt">end =</span> <span class="fl">0.8</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="st">  </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">5</span>))<span class="op">+</span></a>
+<a class="sourceLine" id="cb6-14" title="14"><span class="st">  </span><span class="kw">theme_few</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb6-15" title="15"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb6-16" title="16"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;tidal cycle (#)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;mean speed (m/s) foraging period&quot;</span>)</a>
+<a class="sourceLine" id="cb6-17" title="17"></a>
+<a class="sourceLine" id="cb6-18" title="18"><span class="co"># save figure</span></a>
+<a class="sourceLine" id="cb6-19" title="19"><span class="kw">ggsave</span>(fig_speed_tide, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_speed_tide.png&quot;</span>, <span class="dt">height =</span> <span class="dv">5</span>, <span class="dt">width =</span> <span class="dv">8</span>, <span class="dt">dpi=</span><span class="dv">300</span>)</a>
+<a class="sourceLine" id="cb6-20" title="20"><span class="kw">dev.off</span>()</a></code></pre></div>
 
 </div>
 </div>
