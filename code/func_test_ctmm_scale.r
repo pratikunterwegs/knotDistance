@@ -87,11 +87,9 @@ test_ctmm_scale <- function(datafile, scale){
     data_for_ctmm <- setDT(data)[,.(id, tide_number, x, y, time, VARX, VARY)]
     
     # aggregate within a tide to `scale` seconds
-    data_for_ctmm <- group_by(data_for_ctmm, tide_number) %>%
-      group_split() %>% # use experimental group split function
+    data_for_ctmm <- split(x = data_for_ctmm, f = data_for_ctmm$tide_number) %>%
       map(wat_agg_data, interval = scale) %>%
-      bind_rows() %>% 
-      ungroup()
+      bind_rows()
     
     # make each tidal cycle an indiv
     setDT(data_for_ctmm)
@@ -176,9 +174,7 @@ test_ctmm_scale <- function(datafile, scale){
       # filter data for ctmm based on speed estimate data
       setDT(data)[,.(id, tide_number, x, y, time, VARX, VARY)]
       data <- data[tide_number %in% speed_est$tide_number,]
-      data <- setDF(data) %>% 
-        group_by(tide_number) %>% 
-        group_split() %>% 
+      data <- split(x = data, f = data$tide_number) %>% 
         map(wat_agg_data, interval = scale) %>% 
         bind_rows() %>% 
         ungroup()
@@ -187,7 +183,7 @@ test_ctmm_scale <- function(datafile, scale){
         speeds_ <- speeds(object=obj_tel, CTMM=ctmm_mod)
       })
       # join speed to data
-      data <- left_join(data, inst_speeds, by = c("time" = "t"))
+      data <- left_join(setDF(data), inst_speeds, by = c("time" = "t"))
       # write data
       fwrite(data, file = as.character(glue('output/mods/speeds_{id_data}_{scale}.csv')))
       #save(inst_speeds, file = as.character(glue('output/mods/speeds_{id_data}_{scale}.rdata')))
