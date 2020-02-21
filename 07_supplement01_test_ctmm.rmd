@@ -56,7 +56,7 @@ data_ids <- str_extract(data_files, "(tx_\\d+)") %>% str_sub(-3,-1)
 ## Choose scales of aggregation
 
 ```{r choose_agg_scale, eval=FALSE}
-scales <- c(30)
+scales <- c(15, 30, 60)
 
 data_to_test <- crossing(scales, nesting(data_files, data_ids))
 rm(scales, data_files)
@@ -204,7 +204,7 @@ fig_speed_quality <-
   # geom_boxplot(aes(x = scale, y = speed, group = interaction(scale),
   #               col = factor(estimate)), size = 0.3, notch = F, 
   #              fill = "grey90", alpha= 0.5)+
-  facet_wrap(~estimate, labeller = label_both, ncol = 3)+
+  facet_grid(scale~estimate, labeller = label_both, ncol = 3)+
   # scale_x_continuous(breaks = c(15,30,60))+
   scale_colour_scico_d(palette = "berlin", begin = 0.2, end = 0.8)+
   coord_fixed(ylim = c(0,5), ratio = 0.1)+
