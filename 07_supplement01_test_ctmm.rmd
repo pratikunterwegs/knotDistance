@@ -48,7 +48,7 @@ tag_info[,Release_Date := as.POSIXct(paste(Release_Date, Release_Time, sep = " "
                                      format = "%d.%m.%y %H:%M", tz = "CET")]
 
 # sub for knots in data
-data_files <- data_files[as.integer(data_ids) %in% tag_info$Toa_Tag][1:10]
+data_files <- data_files[as.integer(data_ids) %in% tag_info$Toa_Tag]
 data_ids <- str_extract(data_files, "(tx_\\d+)") %>% str_sub(-3,-1)
 
 ```
