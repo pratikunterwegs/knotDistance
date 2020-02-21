@@ -25,17 +25,23 @@ test_ctmm_scale <- function(datafile, scale){
   
   # load raw data
   {
-    reldate <- fread("data/release_data_2018.csv")
-    reldate[,Release_Date:=fastPOSIXct(Release_Date)]
-    
-    # read data and filter after release + 24 hrs
-    data <- fread(datafile, integer64 = "numeric")
-    
-    id_data <- as.character(unique(data$TAG))
-    id_data <- str_sub(id_data, -3, -1)
-    
-    id_rel <- reldate[id == id_data, Release_Date]
-    id_rel <- as.numeric(id_rel)
+    tryCatch({
+      reldate <- fread("data/release_data_2018.csv")
+      reldate[,Release_Date:=fastPOSIXct(Release_Date)]
+      
+      # read data and filter after release + 24 hrs
+      data <- fread(datafile, integer64 = "numeric")
+      
+      id_data <- as.character(unique(data$TAG))
+      id_data <- str_sub(id_data, -3, -1)
+      
+      id_rel <- reldate[id == id_data, Release_Date]
+      id_rel <- as.numeric(id_rel)
+    },
+    error = function(e) {
+      message(glue("could not find id {id_data} in release data"))
+    }
+    )
     
     # filter out the first 24 hours since release
     data <- data[TIME/1e3 > as.numeric(id_rel + (24*60*60)),]
@@ -54,28 +60,34 @@ test_ctmm_scale <- function(datafile, scale){
     # add tide data
     data <- wat_add_tide(df = data,
                          tide_data = "data/tidesSummer2018.csv")
-
+    
     # filter for low tide
     data <- setDT(data)
     data <- data[between(tidaltime, tide_hr_start*60, tide_hr_end*60),]
+    if(nrow(data) > 1){
+      message("data has rows and will be processed")
+    } else stop("data has too few rows")
   }
-
+  
   # implement quality filters
   {
     data_summary <- data[,.(duration = (max(time) - min(time))/60,
                             prop_fixes = length(x) / ((max(time) - min(time))/3)),
-                          by = .(tide_number)]
+                         by = .(tide_number)]
     data_summary <- data_summary[duration >= tide_duration & prop_fixes >= tide_quality,]
-
+    
     data <- data[tide_number %in% data_summary$tide_number,]
+    if(nrow(data) > 1){
+      message("processed for quality")
+    } else stop("quality processing removed all data")
   }
   
   # prepare for telemetry
   {
     data_for_ctmm <- setDT(data)[,.(id, tide_number, x, y, time, VARX, VARY)]
-
+    
     # aggregate within a tide to `scale` seconds
-    data_for_ctmm <- split(data_for_ctmm, f = data_for_ctmm$tide_number) %>%
+    data_for_ctmm <- split(x = data_for_ctmm, f = data_for_ctmm$tide_number) %>%
       map(wat_agg_data, interval = scale) %>%
       bind_rows()
     
@@ -132,7 +144,7 @@ test_ctmm_scale <- function(datafile, scale){
   }
   
   message("model fit!")
-
+  
   # print model
   {
     if(dir.exists("mod_output") == F)
@@ -140,23 +152,42 @@ test_ctmm_scale <- function(datafile, scale){
       dir.create("mod_output")
     }
     
-    # get speed estimates with id, tide, and scale
-    speed_est <- map(mod, function(model) as.data.table(speed(model, units=FALSE)))
-    speed_est <- data.table::rbindlist(speed_est)
-    speed_est[,`:=`(id = id_data,
-                    scale = scale,
-                    tide_number = as.numeric(substring(names(mod), 
-                                            regexpr("_", names(mod)) + 1, 
-                                            nchar(names(mod)))))]
-
-    # add tide quality checks
-    speed_est <- merge(speed_est, data_summary, by = "tide_number")
+    {
+      # get speed estimates with id, tide, and scale
+      speed_est <- map(mod, function(model) as.data.table(speed(model, units=FALSE)))
+      speed_est <- data.table::rbindlist(speed_est)
+      speed_est[,`:=`(id = id_data,
+                      scale = scale,
+                      tide_number = as.numeric(substring(names(mod), 
+                                                         regexpr("_", names(mod)) + 1, 
+                                                         nchar(names(mod)))))]
+      
+      # add tide quality checks
+      speed_est <- merge(speed_est, data_summary, by = "tide_number")
+      # write data
+      fwrite(speed_est, file = "output/speed_estimates_2018.csv", append = TRUE)
+      # save the models
+      save(mod, file = as.character(glue('output/mods/ctmm_{id_data}_{scale}.rdata')))
+    }
     
-    # write data
-    fwrite(speed_est, file = "output/speed_estimates_2018.csv", append = TRUE)
-    
-    # save the models
-    save(mod, file = as.character(glue('output/mods/ctmm_{id_data}_{scale}.rdata')))
+    {
+      # filter data for ctmm based on speed estimate data
+      setDT(data)[,.(id, tide_number, x, y, time, VARX, VARY)]
+      data <- data[tide_number %in% speed_est$tide_number,]
+      data <- split(x = data, f = data$tide_number) %>% 
+        map(wat_agg_data, interval = scale) %>% 
+        bind_rows() %>% 
+        ungroup()
+      # get speeds
+      inst_speeds <- map2_df(tel, mod, function(obj_tel, ctmm_mod){
+        speeds_ <- speeds(object=obj_tel, CTMM=ctmm_mod)
+      })
+      # join speed to data
+      data <- left_join(setDF(data), inst_speeds, by = c("time" = "t"))
+      # write data
+      fwrite(data, file = as.character(glue('output/mods/speeds_{id_data}_{scale}.csv')))
+      #save(inst_speeds, file = as.character(glue('output/mods/speeds_{id_data}_{scale}.rdata')))
+    }    
   }
   
   # check model fit

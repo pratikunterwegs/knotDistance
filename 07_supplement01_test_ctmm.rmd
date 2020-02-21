@@ -56,11 +56,13 @@ data_ids <- str_extract(data_files, "(tx_\\d+)") %>% str_sub(-3,-1)
 ## Choose scales of aggregation
 
 ```{r choose_agg_scale, eval=FALSE}
-scales <- c(15, 30, 60)
+scales <- c(30)
 
 data_to_test <- crossing(scales, nesting(data_files, data_ids))
 rm(scales, data_files)
 ```
+
+## Transfer data and process on cluster
 
 ```{r count_patches_remaining, eval=FALSE}
 # read password
@@ -132,6 +134,8 @@ for(i in 1:nrow(data_to_test)){
 }
 ```
 
+## Get speed estimates from cluster
+
 ```{r get_speed_estimates_supp, eval=FALSE}
 # access data from cluster
 {
@@ -153,7 +157,11 @@ for(i in 1:nrow(data_to_test)){
     mutate(estimate = as.factor(estimate),
            estimate = fct_relevel(estimate, "low", "mean", "high"))
 }
+```
 
+### Plot speed at different scales
+
+```{r fig_compare_ctmm, eval=FALSE}
 # plot data as lines
 fig_compare_ctmm <- ggplot(data)+
   geom_line(aes(x = tide_number, y = speed, group = interaction(id, tide_number),
@@ -181,6 +189,7 @@ knitr::include_graphics("figs/fig_compare_scale.png")
 
 ```
 
+### Plot speed in relation to proportion of positions
 
 ```{r fig_speed_quality, eval=FALSE}
 # figure speed estimate ~ quality
@@ -214,3 +223,56 @@ knitr::include_graphics("figs/fig_speed_quality.png")
 
 ```
 
+## Get instantaneous speed estimates
+
+```{r get_rdata, eval=FALSE}
+# download model data folder
+{
+  s <- ssh_connect("p284074@peregrine.hpc.rug.nl", passwd = password)
+  scp_download(s, files = "output/mods", to = "data/mod_output/")
+  ssh_disconnect(s)
+}
+
+# list rdata files
+speed_files <- list.files("data/mod_output/mods", pattern = "speeds", full.names = TRUE)
+```
+
+```{r read_rdata, eval=FALSE}
+# read in griend
+library(sf)
+griend <- st_read("data/griend_polygon/") 
+buffer <- griend %>%  st_buffer(dist = 2000)
+
+# read all data
+data <- purrr::map_df(speed_files, function(df){
+  a <- fread(df)
+  setDF(a)
+  a <- a %>% select(id, tide_number, x,y,est) %>% 
+    filter(is.finite(est)) %>% 
+    rename(tag = id)
+  return(a)
+}) 
+
+# plot inviduals per tide
+fig_speed_example <- ggplot(data)+
+  geom_sf(data = griend)+
+  geom_path(aes(x, y, col = est, group = tide_number, size = est > 5), alpha = 0.2)+
+  geom_point(aes(x, y, col = est, group = tide_number, size = est > 5), alpha = 0.5)+
+  facet_wrap(~tag, labeller = label_both)+
+  theme_few()+
+  scale_size_manual(values = c(0.2, 0.1), guide = F)+
+  scale_colour_scico(palette = "hawaii", limits = c(0, 5), na.value = "red", direction = -1)+
+  theme(axis.text = element_blank())+
+  coord_sf(xlim = st_bbox(buffer)[c(1,3)], y = st_bbox(buffer)[c(2,4)])+
+  labs(x=NULL, y = NULL, col = "speed m/s")
+
+# save figure
+ggsave(fig_speed_example, filename = "figs/fig_speed_example.png", height = 12, width = 12, dpi=300)
+dev.off()
+```
+
+```{r show_fig_speed_map, eval=TRUE, fig.cap="Instantaenous speeds visualised"}
+
+knitr::include_graphics("figs/fig_speed_example.png")
+
+```
