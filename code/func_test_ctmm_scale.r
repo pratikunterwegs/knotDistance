@@ -18,7 +18,7 @@ library(stringr)
 # define globals
 tide_duration <- 4
 tide_quality <- 0.5
-tide_hr_start <- 4
+tide_hr_start <- 3
 tide_hr_end <- 10
 
 test_ctmm_scale <- function(datafile, scale){
