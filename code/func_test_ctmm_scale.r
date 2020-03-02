@@ -83,6 +83,21 @@ test_ctmm_scale <- function(datafile, scale){
       message("processed for quality")
     } else stop("quality processing removed all data")
   }
+
+  # remove data outside the limits of the towers mcp
+  {
+    # read in tower location data
+    towers <- fread("data/towers_2018.csv")
+    towers <- st_as_sf(towers, coords = c("X", "Y")) %>% 
+      `st_crs<-`(32631)
+    towers <- st_union(towers)
+    tch <- st_convex_hull(towers)
+    
+    # remove data outside the bounding box
+    bbox <- st_bbox(tch)
+    setDT(data)
+    data <- data[between(x, bbox[1], bbox[3]) & between(y, bbox[2], bbox[4]),]
+  }
   
   # prepare for telemetry
   {
