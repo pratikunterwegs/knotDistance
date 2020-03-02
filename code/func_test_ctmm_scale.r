@@ -113,7 +113,7 @@ test_ctmm_scale <- function(datafile, scale){
     data_for_ctmm[,individual.local.identifier:= paste(id, tide_number,
                                                        sep = "_")]
     # get horizontal error
-    data_for_ctmm[,HDOP := sqrt(VARX+VARY)/10]
+    data_for_ctmm[,HDOP := sqrt(VARX+VARY)]
     # subset columns
     data_for_ctmm <- data_for_ctmm[,.(individual.local.identifier, time, x, y, HDOP)]
     
