@@ -55,7 +55,9 @@ test_ctmm_scale <- function(datafile, scale){
                              atp_ymax = attractors$ymax)
     
     # clean data with median filter
-    data <- wat_clean_data(data)
+    data <- wat_clean_data(somedata = data, moving_window = 3, 
+                            sd_threshold = 100, filter_speed = TRUE, 
+                            speed_cutoff = 150)
     
     # add tide data
     data <- wat_add_tide(df = data,
