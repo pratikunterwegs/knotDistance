@@ -281,3 +281,42 @@ dev.off()
 knitr::include_graphics("figs/fig_speed_example.png")
 
 ```
+
+## Comparing SLD and CTMM
+
+```{r compare_sld_ctmm, eval=FALSE}
+# get sld comparison
+data <- group_by(data, tag, tide_number) %>% 
+  group_split(data) %>% 
+  purrr::map(function(df){
+    df <- mutate(df, sld = watlasUtils::wat_simple_dist(df, "x", "y"))
+    df <- mutate(df, sld = sld/(as.numeric(diff(time))))
+    return(df)
+  })
+data <- bind_rows(data) %>% 
+  sample_frac(0.1)
+
+
+# plot sld comparison
+fig_sld_ctmm_comapre <- ggplot(data %>% filter(est > 0, sld > 0,
+                                               tag %in% sample(unique(data$tag))[1:15]))+
+  geom_point(aes(x = sld, y = est, col = tide_number), alpha = 0.2)+
+  geom_abline(slope = 1, intercept = 0, col = "red")+
+  # coord_cartesian(ylim = c(0, 35), xlim = c(0,35))
+  scale_x_log10(limits = c(0.01, 35), breaks = c(0.01,0.1, 0.5, 1.0, 10.0,30))+
+  scale_y_log10(limits = c(0.1, 35), breaks = c(0.1, 0.5, 1.0, 5.0, 30))+
+  labs(x = "straight line displacement speed (m/s)",
+       y = "continuous time speed-distance speed (m/s)",
+       caption = "shows 10% of all data at 30s scale")+
+  coord_fixed(ratio=0.8)+
+  scale_colour_scico(palette = "batlow")+
+  facet_wrap(~tag, labeller = label_both, nrow = 5)+
+  theme_bw()+
+  theme(panel.grid.minor = element_blank(),
+        axis.text = element_text(size = 8))
+
+ggsave(fig_sld_ctmm_comapre, 
+       filename = "figs/fig_sld_ctmm.png", height = 10, width = 10, dpi=300)
+dev.off()
+```
+
