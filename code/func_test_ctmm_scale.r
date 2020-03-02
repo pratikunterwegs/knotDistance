@@ -21,7 +21,7 @@ tide_quality <- 0.5
 tide_hr_start <- 3
 tide_hr_end <- 10
 
-test_ctmm_scale <- function(datafile, scale){
+test_ctmm_scale <- function(datafile, scale, tide_quality=0){
   
   # load raw data
   {
