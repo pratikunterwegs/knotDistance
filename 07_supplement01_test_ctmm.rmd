@@ -231,36 +231,41 @@ knitr::include_graphics("figs/fig_speed_quality.png")
   s <- ssh_connect("p284074@peregrine.hpc.rug.nl", passwd = password)
   scp_download(s, files = "output/mods", to = "data/mod_output/")
   ssh_disconnect(s)
-}
+
 
 # list rdata files
 speed_files <- list.files("data/mod_output/mods", pattern = "speeds", full.names = TRUE)
+speed_30 <- str_extract_all(speed_files, pattern = regex("[0-9]+")) %>% 
+  purrr::map(function(l) l[2] == "30")
+speed_files <- speed_files[unlist(speed_30)]
 ```
 
 ```{r read_rdata, eval=FALSE}
 # read in griend
 library(sf)
-griend <- st_read("data/griend_polygon/") 
+griend <- st_read("data/griend_polygon/griend_polygon.shp") 
 buffer <- griend %>%  st_buffer(dist = 2000)
 
 # read all data
 data <- purrr::map_df(speed_files, function(df){
   a <- fread(df)
   setDF(a)
-  a <- a %>% select(id, tide_number, x,y,est) %>% 
+  a <- a %>% select(id, tide_number, x,y,est,time) %>% 
     filter(is.finite(est)) %>% 
     rename(tag = id)
   return(a)
 }) 
 
+tags <- unique(data$tag)[1:10]
+
 # plot inviduals per tide
-fig_speed_example <- ggplot(data)+
+fig_speed_example <- ggplot(data %>% filter(tag %in% tags, tide_number == 35))+
   geom_sf(data = griend)+
-  geom_path(aes(x, y, col = est, group = tide_number, size = est > 5), alpha = 0.2)+
-  geom_point(aes(x, y, col = est, group = tide_number, size = est > 5), alpha = 0.5)+
+  geom_path(aes(x, y, col = est, group = tide_number))+
+  geom_point(aes(x, y, col = est, group = tide_number))+
   facet_wrap(~tag, labeller = label_both)+
   theme_few()+
-  scale_size_manual(values = c(0.2, 0.1), guide = F)+
+  #scale_size_manual(values = c(0.2, 0.1), guide = F)+
   scale_colour_scico(palette = "hawaii", limits = c(0, 5), na.value = "red", direction = -1)+
   theme(axis.text = element_blank())+
   coord_sf(xlim = st_bbox(buffer)[c(1,3)], y = st_bbox(buffer)[c(2,4)])+
