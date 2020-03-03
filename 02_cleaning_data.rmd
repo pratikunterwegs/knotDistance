@@ -21,6 +21,8 @@ Much of the preliminary processing also happens on the cluster, and uses the the
 1. Prepare required libraries.
 2. Read in data, apply the cleaning function, and overwrite local data.
 
+## Load libraries
+
 ```{r load_libs, eval=FALSE}
 # load libs
 library(data.table)
@@ -67,16 +69,16 @@ data_ids <- str_extract(data_files, "(tx_\\d+)") %>% str_sub(-3,-1)
 
 ## Choose scales of aggregation
 
-```{r prep_agg_scale, eval=FALSE}
-scales <- 30
+```{r choose_agg_scale, eval=FALSE}
+scales <- c(30)
 
 data_to_test <- crossing(scales, nesting(data_files, data_ids))
 rm(scales, data_files)
 ```
 
-## Transfer data and jobs to cluster
+## Transfer data and process on cluster
 
-```{r send_data, eval=FALSE}
+```{r count_patches_remaining, eval=FALSE}
 # read password
 password = fread("data/password.txt")$password
 
@@ -146,52 +148,3 @@ for(i in 1:nrow(data_to_test)){
 }
 ```
 
-## Access data from cluster
-
-```{r get_speed_estimates, eval=FALSE}
-# access data from cluster
-{
-  s <- ssh_connect("p284074@peregrine.hpc.rug.nl", passwd = password)
-  scp_download(s, files = "output/speed_estimates_2018.csv", to = "data/mod_output/")
-  ssh_disconnect(s)
-}
-
-# read data and process for plotting
-{
-  data <- fread("data/mod_output/speed_estimates_2018.csv", fill = T)
-  data <- setDF(data) %>% 
-    as_tibble() %>% 
-    filter(!is.na(id)) %>% 
-    rename(mean = est) %>% 
-    pivot_longer(cols = c(low, mean, high),
-                       names_to = "estimate", values_to = "speed") %>% 
-    filter(!is.infinite(speed)) %>% 
-    mutate(estimate = as.factor(estimate),
-           estimate = fct_relevel(estimate, "low", "mean", "high"))
-}
-```
-
-## Plot speeds over tides
-
-```{r plot_speed_tide, eval=FALSE}
-# plot data as lines
-fig_speed_tide <- 
-  ggplot(data)+
-  geom_jitter(aes(x = tide_number, y = speed, group = id,
-                col = factor(estimate)), size = 0.1, alpha = 0.5)+
-  
-  # geom_boxplot(aes(x = scale, y = speed, group = interaction(scale),
-  #               col = factor(estimate)), size = 0.3, notch = F, 
-  #              fill = "grey90", alpha= 0.5)+
-  facet_wrap(~estimate, labeller = label_both, ncol = 1)+
-  # scale_x_continuous(breaks = c(15,30,60))+
-  scale_colour_scico_d(palette = "berlin", begin = 0.2, end = 0.8)+
-  coord_cartesian(ylim = c(0,5))+
-  theme_few()+
-  theme(legend.position = "none")+
-  labs(x = "tidal cycle (#)", y = "mean speed (m/s) foraging period")
-
-# save figure
-ggsave(fig_speed_tide, filename = "figs/fig_speed_tide.png", height = 5, width = 8, dpi=300)
-dev.off()
-```
