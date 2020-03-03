@@ -9,7 +9,7 @@ Here, we examine the effect of different aggregation scales on CTMM fits and spe
 
 ## Load libraries
 
-```{r load_libs_supp_01, eval=FALSE}
+```{r load_libs_s01, eval=FALSE}
 # load libs
 library(data.table)
 library(glue)
@@ -55,7 +55,7 @@ data_ids <- str_extract(data_files, "(tx_\\d+)") %>% str_sub(-3,-1)
 
 ## Choose scales of aggregation
 
-```{r choose_agg_scale, eval=FALSE}
+```{r choose_agg_scale_s01, eval=FALSE}
 scales <- c(15, 30, 60)
 
 data_to_test <- crossing(scales, nesting(data_files, data_ids))
@@ -64,7 +64,7 @@ rm(scales, data_files)
 
 ## Transfer data and process on cluster
 
-```{r count_patches_remaining, eval=FALSE}
+```{r count_patches_remaining_s01, eval=FALSE}
 # read password
 password = fread("data/password.txt")$password
 
@@ -136,7 +136,7 @@ for(i in 1:nrow(data_to_test)){
 
 ## Get speed estimates from cluster
 
-```{r get_speed_estimates_supp, eval=FALSE}
+```{r get_speed_estimates_s01, eval=FALSE}
 # access data from cluster
 {
   s <- ssh_connect("p284074@peregrine.hpc.rug.nl", passwd = password)
@@ -161,7 +161,7 @@ for(i in 1:nrow(data_to_test)){
 
 ### Plot speed at different scales
 
-```{r fig_compare_ctmm, eval=FALSE}
+```{r fig_compare_ctmm_s01, eval=FALSE}
 # plot data as lines
 fig_compare_ctmm <- ggplot(data)+
   geom_line(aes(x = tide_number, y = speed, group = interaction(id, tide_number),
@@ -183,7 +183,7 @@ ggsave(fig_compare_ctmm, filename = "figs/fig_compare_scale.png", height = 5, wi
 dev.off()
 ```
 
-```{r show_fig_compare_scale, eval=TRUE, fig.cap="Effect of aggregation scale on CTMM speed estimates, using 2 individual red knots over all tidal cycles in which they were tracked, and which satisfied quality criteria."}
+```{r show_fig_compare_scale_s01, eval=TRUE, fig.cap="Effect of aggregation scale on CTMM speed estimates, using 2 individual red knots over all tidal cycles in which they were tracked, and which satisfied quality criteria."}
 
 knitr::include_graphics("figs/fig_compare_scale.png")
 
@@ -191,7 +191,7 @@ knitr::include_graphics("figs/fig_compare_scale.png")
 
 ### Plot speed in relation to proportion of positions
 
-```{r fig_speed_quality, eval=FALSE}
+```{r fig_speed_quality_s01, eval=FALSE}
 # figure speed estimate ~ quality
 fig_speed_quality <-
   ggplot(data %>% filter(speed <= 5))+
@@ -217,7 +217,7 @@ ggsave(fig_speed_quality, filename = "figs/fig_speed_quality.png", height = 5, w
 dev.off()
 ```
 
-```{r show_fig_compare_qual, eval=TRUE, fig.cap="Effect of proportion of positions realised on CTMM speed estimates."}
+```{r show_fig_compare_qual_s01, eval=TRUE, fig.cap="Effect of proportion of positions realised on CTMM speed estimates."}
 
 knitr::include_graphics("figs/fig_speed_quality.png")
 
@@ -231,7 +231,7 @@ knitr::include_graphics("figs/fig_speed_quality.png")
   s <- ssh_connect("p284074@peregrine.hpc.rug.nl", passwd = password)
   scp_download(s, files = "output/mods", to = "data/mod_output/")
   ssh_disconnect(s)
-
+}
 
 # list rdata files
 speed_files <- list.files("data/mod_output/mods", pattern = "speeds", full.names = TRUE)
@@ -276,12 +276,6 @@ ggsave(fig_speed_example, filename = "figs/fig_speed_example.png", height = 12, 
 dev.off()
 ```
 
-```{r show_fig_speed_map, eval=TRUE, fig.cap="Instantaenous speeds visualised"}
-
-knitr::include_graphics("figs/fig_speed_example.png")
-
-```
-
 ## Comparing SLD and CTMM
 
 ```{r compare_sld_ctmm, eval=FALSE}
@@ -294,12 +288,17 @@ data <- group_by(data, tag, tide_number) %>%
     return(df)
   })
 data <- bind_rows(data) %>% 
-  sample_frac(0.1)
+  sample_frac(0.01)
 
+# read tide wise speed summary and add prop fixes to data
+speed_summary <- fread("data/mod_output/speed_estimates_2018.csv")
+data <- left_join(data, speed_summary %>% select(id, tide_number, prop_fixes),
+                  by = c("tag" = "id", "tide_number"))
+# round prop fixes to 0.25
+data <- mutate(data, prop_fixes = plyr::round_any(prop_fixes, 0.25))
 
 # plot sld comparison
-fig_sld_ctmm_comapre <- ggplot(data %>% filter(est > 0, sld > 0,
-                                               tag %in% sample(unique(data$tag))[1:15]))+
+fig_sld_ctmm_comapre <- ggplot(data %>% filter(est > 0, sld > 0))+
   geom_point(aes(x = sld, y = est, col = tide_number), alpha = 0.2)+
   geom_abline(slope = 1, intercept = 0, col = "red")+
   # coord_cartesian(ylim = c(0, 35), xlim = c(0,35))
@@ -307,16 +306,21 @@ fig_sld_ctmm_comapre <- ggplot(data %>% filter(est > 0, sld > 0,
   scale_y_log10(limits = c(0.1, 35), breaks = c(0.1, 0.5, 1.0, 5.0, 30))+
   labs(x = "straight line displacement speed (m/s)",
        y = "continuous time speed-distance speed (m/s)",
-       caption = "shows 10% of all data at 30s scale")+
-  coord_fixed(ratio=0.8)+
+       caption = "shows 1% of all data at 30s scale")+
+  #coord_fixed(ratio=0.8)+
   scale_colour_scico(palette = "batlow")+
-  facet_wrap(~tag, labeller = label_both, nrow = 5)+
-  theme_bw()+
+  facet_wrap(~prop_fixes, labeller = label_both)+
+  theme_few()+
   theme(panel.grid.minor = element_blank(),
-        axis.text = element_text(size = 8))
+        axis.text = element_text(size = 5))
 
 ggsave(fig_sld_ctmm_comapre, 
-       filename = "figs/fig_sld_ctmm.png", height = 10, width = 10, dpi=300)
+       filename = "figs/fig_sld_ctmm_prop_fixes.png", height = 5, width = 8, dpi=300)
 dev.off()
 ```
 
+```{r show_fig_speed_map, eval=TRUE, fig.cap="Instantaenous speeds visualised"}
+
+knitr::include_graphics("figs/fig_sld_ctmm_prop_fixes.png")
+
+```
