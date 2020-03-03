@@ -18,10 +18,10 @@ library(stringr)
 # define globals
 tide_duration <- 4
 tide_quality <- 0.5
-tide_hr_start <- 4
+tide_hr_start <- 3
 tide_hr_end <- 10
 
-test_ctmm_scale <- function(datafile, scale){
+test_ctmm_scale <- function(datafile, scale, tide_quality=0){
   
   # load raw data
   {
@@ -55,7 +55,9 @@ test_ctmm_scale <- function(datafile, scale){
                              atp_ymax = attractors$ymax)
     
     # clean data with median filter
-    data <- wat_clean_data(data)
+    data <- wat_clean_data(somedata = data, moving_window = 3, 
+                            sd_threshold = 100, filter_speed = TRUE, 
+                            speed_cutoff = 150)
     
     # add tide data
     data <- wat_add_tide(df = data,
@@ -81,6 +83,21 @@ test_ctmm_scale <- function(datafile, scale){
       message("processed for quality")
     } else stop("quality processing removed all data")
   }
+
+  # remove data outside the limits of the towers mcp
+  {
+    # read in tower location data
+    towers <- fread("data/towers_2018.csv")
+    towers <- st_as_sf(towers, coords = c("X", "Y")) %>% 
+      `st_crs<-`(32631)
+    towers <- st_union(towers)
+    tch <- st_convex_hull(towers)
+    
+    # remove data outside the bounding box
+    bbox <- st_bbox(tch)
+    setDT(data)
+    data <- data[between(x, bbox[1], bbox[3]) & between(y, bbox[2], bbox[4]),]
+  }
   
   # prepare for telemetry
   {
@@ -96,7 +113,7 @@ test_ctmm_scale <- function(datafile, scale){
     data_for_ctmm[,individual.local.identifier:= paste(id, tide_number,
                                                        sep = "_")]
     # get horizontal error
-    data_for_ctmm[,HDOP := sqrt(VARX+VARY)/10]
+    data_for_ctmm[,HDOP := sqrt(VARX+VARY)]
     # subset columns
     data_for_ctmm <- data_for_ctmm[,.(individual.local.identifier, time, x, y, HDOP)]
     

@@ -4,27 +4,27 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Section 2 CTMM on WATLAS data using a computing cluster | Linking experimental measures of personality to free-living movement</title>
-  <meta name="description" content="Section 2 CTMM on WATLAS data using a computing cluster | Linking experimental measures of personality to free-living movement" />
+  <title>2 CTMM on WATLAS data using a computing cluster | Linking experimental measures of personality to free-living movement</title>
+  <meta name="description" content="2 CTMM on WATLAS data using a computing cluster | Linking experimental measures of personality to free-living movement" />
   <meta name="generator" content="bookdown 0.16 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Section 2 CTMM on WATLAS data using a computing cluster | Linking experimental measures of personality to free-living movement" />
+  <meta property="og:title" content="2 CTMM on WATLAS data using a computing cluster | Linking experimental measures of personality to free-living movement" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="Section 2 CTMM on WATLAS data using a computing cluster | Linking experimental measures of personality to free-living movement" />
+  <meta property="og:description" content="2 CTMM on WATLAS data using a computing cluster | Linking experimental measures of personality to free-living movement" />
   <meta name="github-repo" content="pratikunterwegs/knotDistance" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Section 2 CTMM on WATLAS data using a computing cluster | Linking experimental measures of personality to free-living movement" />
+  <meta name="twitter:title" content="2 CTMM on WATLAS data using a computing cluster | Linking experimental measures of personality to free-living movement" />
   
-  <meta name="twitter:description" content="Section 2 CTMM on WATLAS data using a computing cluster | Linking experimental measures of personality to free-living movement" />
+  <meta name="twitter:description" content="2 CTMM on WATLAS data using a computing cluster | Linking experimental measures of personality to free-living movement" />
   
 
 <meta name="author" content="Pratik R Gupte" />
 
 
-<meta name="date" content="2020-02-21" />
+<meta name="date" content="2020-03-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -34,6 +34,7 @@
 <link rel="prev" href="index.html"/>
 <link rel="next" href="applying-ctmm-to-watlas-data.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -53,25 +54,26 @@
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -80,9 +82,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -128,28 +130,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#attribution"><i class="fa fa-check"></i><b>1.1</b> Attribution</a></li>
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.2</b> Data access</a></li>
 <li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#data-processing"><i class="fa fa-check"></i><b>1.3</b> Data processing</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html"><i class="fa fa-check"></i><b>2</b> CTMM on WATLAS data using a computing cluster</a><ul>
-<li class="chapter" data-level="2.1" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#load-prelim-data"><i class="fa fa-check"></i><b>2.1</b> Load prelim data</a></li>
-<li class="chapter" data-level="2.2" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#choose-scales-of-aggregation"><i class="fa fa-check"></i><b>2.2</b> Choose scales of aggregation</a></li>
-<li class="chapter" data-level="2.3" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#transfer-data-and-jobs-to-cluster"><i class="fa fa-check"></i><b>2.3</b> Transfer data and jobs to cluster</a></li>
-<li class="chapter" data-level="2.4" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#access-data-from-cluster"><i class="fa fa-check"></i><b>2.4</b> Access data from cluster</a></li>
-<li class="chapter" data-level="2.5" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#plot-speeds-over-tides"><i class="fa fa-check"></i><b>2.5</b> Plot speeds over tides</a></li>
+<li class="chapter" data-level="2" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html"><i class="fa fa-check"></i><b>2</b> CTMM on WATLAS data using a computing cluster</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#load-libraries"><i class="fa fa-check"></i><b>2.1</b> Load libraries</a></li>
+<li class="chapter" data-level="2.2" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#load-prelim-data"><i class="fa fa-check"></i><b>2.2</b> Load prelim data</a></li>
+<li class="chapter" data-level="2.3" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#choose-scales-of-aggregation"><i class="fa fa-check"></i><b>2.3</b> Choose scales of aggregation</a></li>
+<li class="chapter" data-level="2.4" data-path="ctmm-on-watlas-data-using-a-computing-cluster.html"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#transfer-data-and-process-on-cluster"><i class="fa fa-check"></i><b>2.4</b> Transfer data and process on cluster</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html"><i class="fa fa-check"></i><b>3</b> Applying CTMM to WATLAS data</a><ul>
-<li class="chapter" data-level="3.1" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#load-libraries"><i class="fa fa-check"></i><b>3.1</b> Load libraries</a></li>
+<li class="chapter" data-level="3" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html"><i class="fa fa-check"></i><b>3</b> Applying CTMM to WATLAS data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#load-libraries-1"><i class="fa fa-check"></i><b>3.1</b> Load libraries</a></li>
 <li class="chapter" data-level="3.2" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#load-prelim-data-1"><i class="fa fa-check"></i><b>3.2</b> Load prelim data</a></li>
 <li class="chapter" data-level="3.3" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#choose-scales-of-aggregation-1"><i class="fa fa-check"></i><b>3.3</b> Choose scales of aggregation</a></li>
-<li class="chapter" data-level="3.4" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#transfer-data-and-process-on-cluster"><i class="fa fa-check"></i><b>3.4</b> Transfer data and process on cluster</a></li>
-<li class="chapter" data-level="3.5" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#get-speed-estimates-from-cluster"><i class="fa fa-check"></i><b>3.5</b> Get speed estimates from cluster</a><ul>
+<li class="chapter" data-level="3.4" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#transfer-data-and-process-on-cluster-1"><i class="fa fa-check"></i><b>3.4</b> Transfer data and process on cluster</a></li>
+<li class="chapter" data-level="3.5" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#get-speed-estimates-from-cluster"><i class="fa fa-check"></i><b>3.5</b> Get speed estimates from cluster</a>
+<ul>
 <li class="chapter" data-level="3.5.1" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#plot-speed-at-different-scales"><i class="fa fa-check"></i><b>3.5.1</b> Plot speed at different scales</a></li>
 <li class="chapter" data-level="3.5.2" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#plot-speed-in-relation-to-proportion-of-positions"><i class="fa fa-check"></i><b>3.5.2</b> Plot speed in relation to proportion of positions</a></li>
 </ul></li>
 <li class="chapter" data-level="3.6" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#get-instantaneous-speed-estimates"><i class="fa fa-check"></i><b>3.6</b> Get instantaneous speed estimates</a></li>
+<li class="chapter" data-level="3.7" data-path="applying-ctmm-to-watlas-data.html"><a href="applying-ctmm-to-watlas-data.html#comparing-sld-and-ctmm"><i class="fa fa-check"></i><b>3.7</b> Comparing SLD and CTMM</a></li>
 </ul></li>
 </ul>
 
@@ -169,7 +175,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="ctmm-on-watlas-data-using-a-computing-cluster" class="section level1">
-<h1><span class="header-section-number">Section 2</span> CTMM on WATLAS data using a computing cluster</h1>
+<h1 number="2"><span class="header-section-number">2</span> CTMM on WATLAS data using a computing cluster</h1>
 <p>This section is about running CTMM <span class="citation">(<span class="citeproc-not-found" data-reference-id="calabrese2016"><strong>???</strong></span>)</span> on individual level movement data to calculate mean speeds and total distance travelled.
 CTMM is a time intensive process taking <em>n log(n)</em> seconds for <em>n</em> positions (pers. comm. Mike Noonan).
 We circumvent the obvious time cost by sending each individual’s track to the RUG computing cluster for processing.</p>
@@ -183,166 +189,123 @@ Finally, we output the fitted models and their summaries as <code>.Rdata</code> 
 <li>Prepare required libraries.</li>
 <li>Read in data, apply the cleaning function, and overwrite local data.</li>
 </ol>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># load libs</span></a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(data.table)</a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(glue)</a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="kw">library</span>(stringr)</a>
-<a class="sourceLine" id="cb1-5" title="5"><span class="kw">library</span>(tibble)</a>
-<a class="sourceLine" id="cb1-6" title="6"><span class="kw">library</span>(dplyr)</a>
-<a class="sourceLine" id="cb1-7" title="7"><span class="kw">library</span>(tidyr)</a>
-<a class="sourceLine" id="cb1-8" title="8"><span class="kw">library</span>(forcats)</a>
-<a class="sourceLine" id="cb1-9" title="9"></a>
-<a class="sourceLine" id="cb1-10" title="10"><span class="co"># plot libs</span></a>
-<a class="sourceLine" id="cb1-11" title="11"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb1-12" title="12"><span class="kw">library</span>(ggthemes)</a>
-<a class="sourceLine" id="cb1-13" title="13"><span class="kw">library</span>(scico)</a>
-<a class="sourceLine" id="cb1-14" title="14"></a>
-<a class="sourceLine" id="cb1-15" title="15"><span class="co"># ssh func</span></a>
-<a class="sourceLine" id="cb1-16" title="16"><span class="kw">library</span>(ssh)</a></code></pre></div>
+<div id="load-libraries" class="section level2">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Load libraries</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb1-1"></a><span class="co"># load libs</span></span>
+<span id="cb1-2"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb1-2"></a><span class="kw">library</span>(data.table)</span>
+<span id="cb1-3"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb1-3"></a><span class="kw">library</span>(glue)</span>
+<span id="cb1-4"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb1-4"></a><span class="kw">library</span>(stringr)</span>
+<span id="cb1-5"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb1-5"></a><span class="kw">library</span>(tibble)</span>
+<span id="cb1-6"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb1-6"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb1-7"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb1-7"></a><span class="kw">library</span>(tidyr)</span>
+<span id="cb1-8"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb1-8"></a><span class="kw">library</span>(forcats)</span>
+<span id="cb1-9"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb1-9"></a></span>
+<span id="cb1-10"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb1-10"></a><span class="co"># plot libs</span></span>
+<span id="cb1-11"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb1-11"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb1-12"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb1-12"></a><span class="kw">library</span>(ggthemes)</span>
+<span id="cb1-13"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb1-13"></a><span class="kw">library</span>(scico)</span>
+<span id="cb1-14"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb1-14"></a></span>
+<span id="cb1-15"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb1-15"></a><span class="co"># ssh func</span></span>
+<span id="cb1-16"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb1-16"></a><span class="kw">library</span>(ssh)</span></code></pre></div>
+</div>
 <div id="load-prelim-data" class="section level2">
-<h2><span class="header-section-number">2.1</span> Load prelim data</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># load data</span></a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="co"># make a list of data files to read</span></a>
-<a class="sourceLine" id="cb2-3" title="3">data_files &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">path =</span> <span class="st">&quot;data/watlas&quot;</span>, <span class="dt">pattern =</span> <span class="st">&quot;whole_season*&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb2-4" title="4"></a>
-<a class="sourceLine" id="cb2-5" title="5">data_ids &lt;-<span class="st"> </span><span class="kw">str_extract</span>(data_files, <span class="st">&quot;(tx_</span><span class="ch">\\</span><span class="st">d+)&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_sub</span>(<span class="op">-</span><span class="dv">3</span>,<span class="op">-</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb2-6" title="6"></a>
-<a class="sourceLine" id="cb2-7" title="7"><span class="co"># read deployment data from local file in data folder</span></a>
-<a class="sourceLine" id="cb2-8" title="8">tag_info &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/SelinDB.csv&quot;</span>)</a>
-<a class="sourceLine" id="cb2-9" title="9"></a>
-<a class="sourceLine" id="cb2-10" title="10"><span class="co"># filter out NAs in release date and time</span></a>
-<a class="sourceLine" id="cb2-11" title="11">tag_info &lt;-<span class="st"> </span>tag_info[<span class="op">!</span><span class="kw">is.na</span>(Release_Date) <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(Release_Time),]</a>
-<a class="sourceLine" id="cb2-12" title="12"></a>
-<a class="sourceLine" id="cb2-13" title="13"><span class="co"># make release date column as POSIXct</span></a>
-<a class="sourceLine" id="cb2-14" title="14">tag_info[,Release_Date <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">as.POSIXct</span>(<span class="kw">paste</span>(Release_Date, Release_Time, <span class="dt">sep =</span> <span class="st">&quot; &quot;</span>), </a>
-<a class="sourceLine" id="cb2-15" title="15">                                     <span class="dt">format =</span> <span class="st">&quot;%d.%m.%y %H:%M&quot;</span>, <span class="dt">tz =</span> <span class="st">&quot;CET&quot;</span>)]</a>
-<a class="sourceLine" id="cb2-16" title="16"></a>
-<a class="sourceLine" id="cb2-17" title="17"><span class="co"># sub for knots in data</span></a>
-<a class="sourceLine" id="cb2-18" title="18">data_files &lt;-<span class="st"> </span>data_files[<span class="kw">as.integer</span>(data_ids) <span class="op">%in%</span><span class="st"> </span>tag_info<span class="op">$</span>Toa_Tag]</a>
-<a class="sourceLine" id="cb2-19" title="19">data_ids &lt;-<span class="st"> </span><span class="kw">str_extract</span>(data_files, <span class="st">&quot;(tx_</span><span class="ch">\\</span><span class="st">d+)&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_sub</span>(<span class="op">-</span><span class="dv">3</span>,<span class="op">-</span><span class="dv">1</span>)</a></code></pre></div>
+<h2 number="2.2"><span class="header-section-number">2.2</span> Load prelim data</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb2-1"></a><span class="co"># load data</span></span>
+<span id="cb2-2"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb2-2"></a><span class="co"># make a list of data files to read</span></span>
+<span id="cb2-3"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb2-3"></a>data_files &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">path =</span> <span class="st">&quot;data/watlas&quot;</span>, <span class="dt">pattern =</span> <span class="st">&quot;whole_season*&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb2-4"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb2-4"></a></span>
+<span id="cb2-5"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb2-5"></a>data_ids &lt;-<span class="st"> </span><span class="kw">str_extract</span>(data_files, <span class="st">&quot;(tx_</span><span class="ch">\\</span><span class="st">d+)&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_sub</span>(<span class="op">-</span><span class="dv">3</span>,<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb2-6"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb2-6"></a></span>
+<span id="cb2-7"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb2-7"></a><span class="co"># read deployment data from local file in data folder</span></span>
+<span id="cb2-8"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb2-8"></a>tag_info &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/SelinDB.csv&quot;</span>)</span>
+<span id="cb2-9"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb2-9"></a></span>
+<span id="cb2-10"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb2-10"></a><span class="co"># filter out NAs in release date and time</span></span>
+<span id="cb2-11"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb2-11"></a>tag_info &lt;-<span class="st"> </span>tag_info[<span class="op">!</span><span class="kw">is.na</span>(Release_Date) <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(Release_Time),]</span>
+<span id="cb2-12"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb2-12"></a></span>
+<span id="cb2-13"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb2-13"></a><span class="co"># make release date column as POSIXct</span></span>
+<span id="cb2-14"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb2-14"></a>tag_info[,Release_Date <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">as.POSIXct</span>(<span class="kw">paste</span>(Release_Date, Release_Time, <span class="dt">sep =</span> <span class="st">&quot; &quot;</span>), </span>
+<span id="cb2-15"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb2-15"></a>                                     <span class="dt">format =</span> <span class="st">&quot;%d.%m.%y %H:%M&quot;</span>, <span class="dt">tz =</span> <span class="st">&quot;CET&quot;</span>)]</span>
+<span id="cb2-16"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb2-16"></a></span>
+<span id="cb2-17"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb2-17"></a><span class="co"># sub for knots in data</span></span>
+<span id="cb2-18"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb2-18"></a>data_files &lt;-<span class="st"> </span>data_files[<span class="kw">as.integer</span>(data_ids) <span class="op">%in%</span><span class="st"> </span>tag_info<span class="op">$</span>Toa_Tag]</span>
+<span id="cb2-19"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb2-19"></a>data_ids &lt;-<span class="st"> </span><span class="kw">str_extract</span>(data_files, <span class="st">&quot;(tx_</span><span class="ch">\\</span><span class="st">d+)&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_sub</span>(<span class="op">-</span><span class="dv">3</span>,<span class="op">-</span><span class="dv">1</span>)</span></code></pre></div>
 </div>
 <div id="choose-scales-of-aggregation" class="section level2">
-<h2><span class="header-section-number">2.2</span> Choose scales of aggregation</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">scales &lt;-<span class="st"> </span><span class="dv">30</span></a>
-<a class="sourceLine" id="cb3-2" title="2"></a>
-<a class="sourceLine" id="cb3-3" title="3">data_to_test &lt;-<span class="st"> </span><span class="kw">crossing</span>(scales, <span class="kw">nesting</span>(data_files, data_ids))</a>
-<a class="sourceLine" id="cb3-4" title="4"><span class="kw">rm</span>(scales, data_files)</a></code></pre></div>
+<h2 number="2.3"><span class="header-section-number">2.3</span> Choose scales of aggregation</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb3-1"></a>scales &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">30</span>)</span>
+<span id="cb3-2"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb3-2"></a></span>
+<span id="cb3-3"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb3-3"></a>data_to_test &lt;-<span class="st"> </span><span class="kw">crossing</span>(scales, <span class="kw">nesting</span>(data_files, data_ids))</span>
+<span id="cb3-4"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb3-4"></a><span class="kw">rm</span>(scales, data_files)</span></code></pre></div>
 </div>
-<div id="transfer-data-and-jobs-to-cluster" class="section level2">
-<h2><span class="header-section-number">2.3</span> Transfer data and jobs to cluster</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># read password</span></a>
-<a class="sourceLine" id="cb4-2" title="2">password =<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/password.txt&quot;</span>)<span class="op">$</span>password</a>
-<a class="sourceLine" id="cb4-3" title="3"></a>
-<a class="sourceLine" id="cb4-4" title="4"><span class="co"># transfer code files</span></a>
-<a class="sourceLine" id="cb4-5" title="5">{</a>
-<a class="sourceLine" id="cb4-6" title="6">  s &lt;-<span class="st"> </span><span class="kw">ssh_connect</span>(<span class="st">&quot;p284074@peregrine.hpc.rug.nl&quot;</span>, <span class="dt">passwd =</span> password)</a>
-<a class="sourceLine" id="cb4-7" title="7">  rfiles &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="st">&quot;code&quot;</span>, <span class="dt">pattern =</span> <span class="st">&quot;.r&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb4-8" title="8">  <span class="kw">scp_upload</span>(s, rfiles, <span class="dt">to =</span> <span class="st">&quot;code/&quot;</span>)</a>
-<a class="sourceLine" id="cb4-9" title="9">  <span class="kw">ssh_disconnect</span>(s)</a>
-<a class="sourceLine" id="cb4-10" title="10">}</a>
-<a class="sourceLine" id="cb4-11" title="11"></a>
-<a class="sourceLine" id="cb4-12" title="12"><span class="co"># clear old speed estimates</span></a>
-<a class="sourceLine" id="cb4-13" title="13">{</a>
-<a class="sourceLine" id="cb4-14" title="14">  s &lt;-<span class="st"> </span><span class="kw">ssh_connect</span>(<span class="st">&quot;p284074@peregrine.hpc.rug.nl&quot;</span>, <span class="dt">passwd =</span> password)</a>
-<a class="sourceLine" id="cb4-15" title="15">  <span class="kw">ssh_exec_wait</span>(s, <span class="dt">command =</span> <span class="st">&quot;rm output/speed_estimates_2018.csv&quot;</span>)</a>
-<a class="sourceLine" id="cb4-16" title="16">  <span class="kw">ssh_disconnect</span>(s)</a>
-<a class="sourceLine" id="cb4-17" title="17">}</a>
-<a class="sourceLine" id="cb4-18" title="18"></a>
-<a class="sourceLine" id="cb4-19" title="19"><span class="co"># execute tests</span></a>
-<a class="sourceLine" id="cb4-20" title="20"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(data_to_test)){</a>
-<a class="sourceLine" id="cb4-21" title="21">  </a>
-<a class="sourceLine" id="cb4-22" title="22">  scale &lt;-<span class="st"> </span>data_to_test<span class="op">$</span>scales[i]</a>
-<a class="sourceLine" id="cb4-23" title="23">  file &lt;-<span class="st"> </span>data_to_test<span class="op">$</span>data_files[i]</a>
-<a class="sourceLine" id="cb4-24" title="24">  id &lt;-<span class="st"> </span>data_to_test<span class="op">$</span>data_ids[i]</a>
-<a class="sourceLine" id="cb4-25" title="25">  <span class="co"># connect to peregrine</span></a>
-<a class="sourceLine" id="cb4-26" title="26">  s &lt;-<span class="st"> </span><span class="kw">ssh_connect</span>(<span class="st">&quot;p284074@peregrine.hpc.rug.nl&quot;</span>, <span class="dt">passwd =</span> password)</a>
-<a class="sourceLine" id="cb4-27" title="27">  <span class="co"># make directory if non-existent</span></a>
-<a class="sourceLine" id="cb4-28" title="28">  <span class="kw">ssh_exec_wait</span>(s, <span class="dt">command =</span> <span class="st">&quot;mkdir -p data/watlas&quot;</span>)</a>
-<a class="sourceLine" id="cb4-29" title="29">  </a>
-<a class="sourceLine" id="cb4-30" title="30">  <span class="co"># list files already present</span></a>
-<a class="sourceLine" id="cb4-31" title="31">  files_on_prg &lt;-<span class="st"> </span><span class="kw">ssh_exec_internal</span>(s, <span class="dt">command =</span> <span class="st">&quot;ls data/watlas&quot;</span>)</a>
-<a class="sourceLine" id="cb4-32" title="32">  files_on_prg &lt;-<span class="st"> </span><span class="kw">rawToChar</span>(files_on_prg<span class="op">$</span>stdout) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-33" title="33"><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-34" title="34"><span class="st">    </span><span class="kw">unlist</span>()</a>
-<a class="sourceLine" id="cb4-35" title="35">  </a>
-<a class="sourceLine" id="cb4-36" title="36">  <span class="co"># check name</span></a>
-<a class="sourceLine" id="cb4-37" title="37">  data_name &lt;-<span class="st"> </span>file <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-38" title="38"><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;/&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-39" title="39"><span class="st">    </span><span class="kw">unlist</span>() <span class="op">%&gt;%</span><span class="st"> </span>.[<span class="dv">3</span>]</a>
-<a class="sourceLine" id="cb4-40" title="40">  </a>
-<a class="sourceLine" id="cb4-41" title="41">  <span class="cf">if</span>(<span class="op">!</span>data_name <span class="op">%in%</span><span class="st"> </span>files_on_prg){</a>
-<a class="sourceLine" id="cb4-42" title="42">    <span class="co"># upload data file for processing</span></a>
-<a class="sourceLine" id="cb4-43" title="43">    <span class="kw">scp_upload</span>(s, file, <span class="dt">to =</span> <span class="st">&quot;data/watlas&quot;</span>)</a>
-<a class="sourceLine" id="cb4-44" title="44">  }</a>
-<a class="sourceLine" id="cb4-45" title="45">  </a>
-<a class="sourceLine" id="cb4-46" title="46">  <span class="co"># make job file</span></a>
-<a class="sourceLine" id="cb4-47" title="47">  {</a>
-<a class="sourceLine" id="cb4-48" title="48">    shebang &lt;-<span class="st"> </span><span class="kw">readLines</span>(<span class="st">&quot;code/template_job.sh&quot;</span>)</a>
-<a class="sourceLine" id="cb4-49" title="49">    </a>
-<a class="sourceLine" id="cb4-50" title="50">    <span class="co"># rename job</span></a>
-<a class="sourceLine" id="cb4-51" title="51">    shebang[<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">glue</span>(<span class="st">&#39;#SBATCH --job-name=ctmm_{file}&#39;</span>)</a>
-<a class="sourceLine" id="cb4-52" title="52">    </a>
-<a class="sourceLine" id="cb4-53" title="53">    text &lt;-<span class="st"> </span><span class="kw">glue</span>(<span class="st">&#39;Rscript --vanilla code/code_test_ctmm_scale.r {file} {scale}&#39;</span>)</a>
-<a class="sourceLine" id="cb4-54" title="54">    jobfile &lt;-<span class="st"> </span><span class="kw">glue</span>(<span class="st">&#39;code/job_ctmm_{id}_{scale}.sh&#39;</span>)</a>
-<a class="sourceLine" id="cb4-55" title="55">    </a>
-<a class="sourceLine" id="cb4-56" title="56">    <span class="kw">writeLines</span>(<span class="kw">c</span>(shebang, text), <span class="dt">con =</span> jobfile)</a>
-<a class="sourceLine" id="cb4-57" title="57">    <span class="kw">scp_upload</span>(s, jobfile, <span class="dt">to =</span> <span class="st">&quot;code/&quot;</span>)</a>
-<a class="sourceLine" id="cb4-58" title="58">  }</a>
-<a class="sourceLine" id="cb4-59" title="59">  </a>
-<a class="sourceLine" id="cb4-60" title="60">  <span class="kw">ssh_exec_wait</span>(s, <span class="dt">command =</span> <span class="kw">glue</span>(<span class="st">&#39;dos2unix {jobfile}&#39;</span>))</a>
-<a class="sourceLine" id="cb4-61" title="61">  <span class="co"># process using ctmm</span></a>
-<a class="sourceLine" id="cb4-62" title="62">  <span class="kw">ssh_exec_wait</span>(s, <span class="dt">command =</span> <span class="kw">glue</span>(<span class="st">&#39;sbatch {jobfile}&#39;</span>))</a>
-<a class="sourceLine" id="cb4-63" title="63">  </a>
-<a class="sourceLine" id="cb4-64" title="64">  <span class="co"># disconnect</span></a>
-<a class="sourceLine" id="cb4-65" title="65">  <span class="kw">ssh_disconnect</span>(s)</a>
-<a class="sourceLine" id="cb4-66" title="66">  </a>
-<a class="sourceLine" id="cb4-67" title="67">}</a></code></pre></div>
-</div>
-<div id="access-data-from-cluster" class="section level2">
-<h2><span class="header-section-number">2.4</span> Access data from cluster</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># access data from cluster</span></a>
-<a class="sourceLine" id="cb5-2" title="2">{</a>
-<a class="sourceLine" id="cb5-3" title="3">  s &lt;-<span class="st"> </span><span class="kw">ssh_connect</span>(<span class="st">&quot;p284074@peregrine.hpc.rug.nl&quot;</span>, <span class="dt">passwd =</span> password)</a>
-<a class="sourceLine" id="cb5-4" title="4">  <span class="kw">scp_download</span>(s, <span class="dt">files =</span> <span class="st">&quot;output/speed_estimates_2018.csv&quot;</span>, <span class="dt">to =</span> <span class="st">&quot;data/mod_output/&quot;</span>)</a>
-<a class="sourceLine" id="cb5-5" title="5">  <span class="kw">ssh_disconnect</span>(s)</a>
-<a class="sourceLine" id="cb5-6" title="6">}</a>
-<a class="sourceLine" id="cb5-7" title="7"></a>
-<a class="sourceLine" id="cb5-8" title="8"><span class="co"># read data and process for plotting</span></a>
-<a class="sourceLine" id="cb5-9" title="9">{</a>
-<a class="sourceLine" id="cb5-10" title="10">  data &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/mod_output/speed_estimates_2018.csv&quot;</span>, <span class="dt">fill =</span> T)</a>
-<a class="sourceLine" id="cb5-11" title="11">  data &lt;-<span class="st"> </span><span class="kw">setDF</span>(data) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-12" title="12"><span class="st">    </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-13" title="13"><span class="st">    </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(id)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-14" title="14"><span class="st">    </span><span class="kw">rename</span>(<span class="dt">mean =</span> est) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-15" title="15"><span class="st">    </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">c</span>(low, mean, high),</a>
-<a class="sourceLine" id="cb5-16" title="16">                       <span class="dt">names_to =</span> <span class="st">&quot;estimate&quot;</span>, <span class="dt">values_to =</span> <span class="st">&quot;speed&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-17" title="17"><span class="st">    </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.infinite</span>(speed)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-18" title="18"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">estimate =</span> <span class="kw">as.factor</span>(estimate),</a>
-<a class="sourceLine" id="cb5-19" title="19">           <span class="dt">estimate =</span> <span class="kw">fct_relevel</span>(estimate, <span class="st">&quot;low&quot;</span>, <span class="st">&quot;mean&quot;</span>, <span class="st">&quot;high&quot;</span>))</a>
-<a class="sourceLine" id="cb5-20" title="20">}</a></code></pre></div>
-</div>
-<div id="plot-speeds-over-tides" class="section level2">
-<h2><span class="header-section-number">2.5</span> Plot speeds over tides</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co"># plot data as lines</span></a>
-<a class="sourceLine" id="cb6-2" title="2">fig_speed_tide &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb6-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>(data)<span class="op">+</span></a>
-<a class="sourceLine" id="cb6-4" title="4"><span class="st">  </span><span class="kw">geom_jitter</span>(<span class="kw">aes</span>(<span class="dt">x =</span> tide_number, <span class="dt">y =</span> speed, <span class="dt">group =</span> id,</a>
-<a class="sourceLine" id="cb6-5" title="5">                <span class="dt">col =</span> <span class="kw">factor</span>(estimate)), <span class="dt">size =</span> <span class="fl">0.1</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb6-6" title="6"><span class="st">  </span></a>
-<a class="sourceLine" id="cb6-7" title="7"><span class="st">  </span><span class="co"># geom_boxplot(aes(x = scale, y = speed, group = interaction(scale),</span></a>
-<a class="sourceLine" id="cb6-8" title="8"><span class="st">  </span><span class="co">#               col = factor(estimate)), size = 0.3, notch = F, </span></a>
-<a class="sourceLine" id="cb6-9" title="9"><span class="st">  </span><span class="co">#              fill = &quot;grey90&quot;, alpha= 0.5)+</span></a>
-<a class="sourceLine" id="cb6-10" title="10"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>estimate, <span class="dt">labeller =</span> label_both, <span class="dt">ncol =</span> <span class="dv">1</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb6-11" title="11"><span class="st">  </span><span class="co"># scale_x_continuous(breaks = c(15,30,60))+</span></a>
-<a class="sourceLine" id="cb6-12" title="12"><span class="st">  </span><span class="kw">scale_colour_scico_d</span>(<span class="dt">palette =</span> <span class="st">&quot;berlin&quot;</span>, <span class="dt">begin =</span> <span class="fl">0.2</span>, <span class="dt">end =</span> <span class="fl">0.8</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb6-13" title="13"><span class="st">  </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">5</span>))<span class="op">+</span></a>
-<a class="sourceLine" id="cb6-14" title="14"><span class="st">  </span><span class="kw">theme_few</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb6-15" title="15"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb6-16" title="16"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;tidal cycle (#)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;mean speed (m/s) foraging period&quot;</span>)</a>
-<a class="sourceLine" id="cb6-17" title="17"></a>
-<a class="sourceLine" id="cb6-18" title="18"><span class="co"># save figure</span></a>
-<a class="sourceLine" id="cb6-19" title="19"><span class="kw">ggsave</span>(fig_speed_tide, <span class="dt">filename =</span> <span class="st">&quot;figs/fig_speed_tide.png&quot;</span>, <span class="dt">height =</span> <span class="dv">5</span>, <span class="dt">width =</span> <span class="dv">8</span>, <span class="dt">dpi=</span><span class="dv">300</span>)</a>
-<a class="sourceLine" id="cb6-20" title="20"><span class="kw">dev.off</span>()</a></code></pre></div>
+<div id="transfer-data-and-process-on-cluster" class="section level2">
+<h2 number="2.4"><span class="header-section-number">2.4</span> Transfer data and process on cluster</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-1"></a><span class="co"># read password</span></span>
+<span id="cb4-2"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-2"></a>password =<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/password.txt&quot;</span>)<span class="op">$</span>password</span>
+<span id="cb4-3"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-3"></a></span>
+<span id="cb4-4"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-4"></a><span class="co"># transfer code files</span></span>
+<span id="cb4-5"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-5"></a>{</span>
+<span id="cb4-6"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-6"></a>  s &lt;-<span class="st"> </span><span class="kw">ssh_connect</span>(<span class="st">&quot;p284074@peregrine.hpc.rug.nl&quot;</span>, <span class="dt">passwd =</span> password)</span>
+<span id="cb4-7"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-7"></a>  rfiles &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="st">&quot;code&quot;</span>, <span class="dt">pattern =</span> <span class="st">&quot;.r&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb4-8"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-8"></a>  <span class="kw">scp_upload</span>(s, rfiles, <span class="dt">to =</span> <span class="st">&quot;code/&quot;</span>)</span>
+<span id="cb4-9"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-9"></a>  <span class="kw">ssh_disconnect</span>(s)</span>
+<span id="cb4-10"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-10"></a>}</span>
+<span id="cb4-11"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-11"></a></span>
+<span id="cb4-12"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-12"></a><span class="co"># clear old speed estimates</span></span>
+<span id="cb4-13"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-13"></a>{</span>
+<span id="cb4-14"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-14"></a>  s &lt;-<span class="st"> </span><span class="kw">ssh_connect</span>(<span class="st">&quot;p284074@peregrine.hpc.rug.nl&quot;</span>, <span class="dt">passwd =</span> password)</span>
+<span id="cb4-15"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-15"></a>  <span class="kw">ssh_exec_wait</span>(s, <span class="dt">command =</span> <span class="st">&quot;rm output/speed_estimates_2018.csv&quot;</span>)</span>
+<span id="cb4-16"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-16"></a>  <span class="kw">ssh_disconnect</span>(s)</span>
+<span id="cb4-17"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-17"></a>}</span>
+<span id="cb4-18"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-18"></a></span>
+<span id="cb4-19"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-19"></a><span class="co"># execute tests</span></span>
+<span id="cb4-20"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-20"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(data_to_test)){</span>
+<span id="cb4-21"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-21"></a>  </span>
+<span id="cb4-22"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-22"></a>  scale &lt;-<span class="st"> </span>data_to_test<span class="op">$</span>scales[i]</span>
+<span id="cb4-23"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-23"></a>  file &lt;-<span class="st"> </span>data_to_test<span class="op">$</span>data_files[i]</span>
+<span id="cb4-24"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-24"></a>  id &lt;-<span class="st"> </span>data_to_test<span class="op">$</span>data_ids[i]</span>
+<span id="cb4-25"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-25"></a>  <span class="co"># connect to peregrine</span></span>
+<span id="cb4-26"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-26"></a>  s &lt;-<span class="st"> </span><span class="kw">ssh_connect</span>(<span class="st">&quot;p284074@peregrine.hpc.rug.nl&quot;</span>, <span class="dt">passwd =</span> password)</span>
+<span id="cb4-27"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-27"></a>  <span class="co"># make directory if non-existent</span></span>
+<span id="cb4-28"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-28"></a>  <span class="kw">ssh_exec_wait</span>(s, <span class="dt">command =</span> <span class="st">&quot;mkdir -p data/watlas&quot;</span>)</span>
+<span id="cb4-29"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-29"></a>  </span>
+<span id="cb4-30"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-30"></a>  <span class="co"># list files already present</span></span>
+<span id="cb4-31"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-31"></a>  files_on_prg &lt;-<span class="st"> </span><span class="kw">ssh_exec_internal</span>(s, <span class="dt">command =</span> <span class="st">&quot;ls data/watlas&quot;</span>)</span>
+<span id="cb4-32"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-32"></a>  files_on_prg &lt;-<span class="st"> </span><span class="kw">rawToChar</span>(files_on_prg<span class="op">$</span>stdout) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb4-33"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-33"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb4-34"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-34"></a><span class="st">    </span><span class="kw">unlist</span>()</span>
+<span id="cb4-35"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-35"></a>  </span>
+<span id="cb4-36"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-36"></a>  <span class="co"># check name</span></span>
+<span id="cb4-37"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-37"></a>  data_name &lt;-<span class="st"> </span>file <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb4-38"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-38"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;/&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb4-39"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-39"></a><span class="st">    </span><span class="kw">unlist</span>() <span class="op">%&gt;%</span><span class="st"> </span>.[<span class="dv">3</span>]</span>
+<span id="cb4-40"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-40"></a>  </span>
+<span id="cb4-41"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-41"></a>  <span class="cf">if</span>(<span class="op">!</span>data_name <span class="op">%in%</span><span class="st"> </span>files_on_prg){</span>
+<span id="cb4-42"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-42"></a>    <span class="co"># upload data file for processing</span></span>
+<span id="cb4-43"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-43"></a>    <span class="kw">scp_upload</span>(s, file, <span class="dt">to =</span> <span class="st">&quot;data/watlas&quot;</span>)</span>
+<span id="cb4-44"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-44"></a>  }</span>
+<span id="cb4-45"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-45"></a>  </span>
+<span id="cb4-46"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-46"></a>  <span class="co"># make job file</span></span>
+<span id="cb4-47"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-47"></a>  {</span>
+<span id="cb4-48"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-48"></a>    shebang &lt;-<span class="st"> </span><span class="kw">readLines</span>(<span class="st">&quot;code/template_job.sh&quot;</span>)</span>
+<span id="cb4-49"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-49"></a>    </span>
+<span id="cb4-50"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-50"></a>    <span class="co"># rename job</span></span>
+<span id="cb4-51"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-51"></a>    shebang[<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">glue</span>(<span class="st">&#39;#SBATCH --job-name=ctmm_{file}&#39;</span>)</span>
+<span id="cb4-52"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-52"></a>    </span>
+<span id="cb4-53"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-53"></a>    text &lt;-<span class="st"> </span><span class="kw">glue</span>(<span class="st">&#39;Rscript --vanilla code/code_test_ctmm_scale.r {file} {scale}&#39;</span>)</span>
+<span id="cb4-54"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-54"></a>    jobfile &lt;-<span class="st"> </span><span class="kw">glue</span>(<span class="st">&#39;code/job_ctmm_{id}_{scale}.sh&#39;</span>)</span>
+<span id="cb4-55"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-55"></a>    </span>
+<span id="cb4-56"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-56"></a>    <span class="kw">writeLines</span>(<span class="kw">c</span>(shebang, text), <span class="dt">con =</span> jobfile)</span>
+<span id="cb4-57"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-57"></a>    <span class="kw">scp_upload</span>(s, jobfile, <span class="dt">to =</span> <span class="st">&quot;code/&quot;</span>)</span>
+<span id="cb4-58"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-58"></a>  }</span>
+<span id="cb4-59"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-59"></a>  </span>
+<span id="cb4-60"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-60"></a>  <span class="kw">ssh_exec_wait</span>(s, <span class="dt">command =</span> <span class="kw">glue</span>(<span class="st">&#39;dos2unix {jobfile}&#39;</span>))</span>
+<span id="cb4-61"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-61"></a>  <span class="co"># process using ctmm</span></span>
+<span id="cb4-62"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-62"></a>  <span class="kw">ssh_exec_wait</span>(s, <span class="dt">command =</span> <span class="kw">glue</span>(<span class="st">&#39;sbatch {jobfile}&#39;</span>))</span>
+<span id="cb4-63"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-63"></a>  </span>
+<span id="cb4-64"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-64"></a>  <span class="co"># disconnect</span></span>
+<span id="cb4-65"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-65"></a>  <span class="kw">ssh_disconnect</span>(s)</span>
+<span id="cb4-66"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-66"></a>  </span>
+<span id="cb4-67"><a href="ctmm-on-watlas-data-using-a-computing-cluster.html#cb4-67"></a>}</span></code></pre></div>
 
 </div>
 </div>
