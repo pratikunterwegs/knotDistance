@@ -298,21 +298,21 @@ data <- left_join(data, speed_summary %>% select(id, tide_number, prop_fixes),
 data <- mutate(data, prop_fixes = plyr::round_any(prop_fixes, 0.25))
 
 # plot sld comparison
-fig_sld_ctmm_comapre <- ggplot(data %>% filter(est > 0, sld > 0))+
-  geom_point(aes(x = sld, y = est, col = tide_number), alpha = 0.2)+
+#fig_sld_ctmm_comapre <- 
+ggplot(data %>% filter(est > 0, sld > 0))+
+  geom_point(aes(x = sld, y = est, col = prop_fixes), alpha = 0.2)+
   geom_abline(slope = 1, intercept = 0, col = "red")+
   # coord_cartesian(ylim = c(0, 35), xlim = c(0,35))
-  scale_x_log10(limits = c(0.01, 35), breaks = c(0.01,0.1, 0.5, 1.0, 10.0,30))+
-  scale_y_log10(limits = c(0.1, 35), breaks = c(0.1, 0.5, 1.0, 5.0, 30))+
+  scale_x_continuous(limits = c(0.01, 35), breaks = c(0.01,0.1, 0.5, 1.0, 10.0,30))+
+  scale_y_continuous(limits = c(0.1, 35), breaks = c(0.1, 0.5, 1.0, 5.0, 30))+
   labs(x = "straight line displacement speed (m/s)",
        y = "continuous time speed-distance speed (m/s)",
        caption = "shows 1% of all data at 30s scale")+
   #coord_fixed(ratio=0.8)+
-  scale_colour_scico(palette = "batlow")+
-  facet_wrap(~prop_fixes, labeller = label_both)+
+  scale_colour_scico(palette = "roma")+
+  facet_grid(~tag, labeller = label_both)+
   theme_few()+
-  theme(panel.grid.minor = element_blank(),
-        axis.text = element_text(size = 5))
+  theme(panel.grid.minor = element_blank())
 
 ggsave(fig_sld_ctmm_comapre, 
        filename = "figs/fig_sld_ctmm_prop_fixes.png", height = 5, width = 8, dpi=300)
