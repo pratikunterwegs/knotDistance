@@ -1,6 +1,10 @@
-# Linking experimental measures of personality to free-living movement
+<!-- badges: start -->
+ [![Project Status: Abandoned – The method has been found unsuitable for our purposes.](https://www.repostatus.org/badges/latest/abandoned.svg)](https://www.repostatus.org/#abandoned)
+<!-- badges: end -->
 
-This repository is the source for a project in preparation that links high-resolution tracking data from individual red knots _Calidris canutus islandica_ to fine-scale experimental behaviour measurements in captivity, and aims to explore whether free-living movement can be predicted by consistent individual differences.
+# Fitting continuous time models to red knot movement
+
+This repository is the source for a project that attempts to fit continuous time movement models to high-frequency tracking of red knots. **This work has been discontinued.**
 
 ## [Readable version](https://pratikunterwegs.github.io/knotDistance/)
 
@@ -10,15 +14,13 @@ A human-readable version of this code is available in bookdown format by clickin
 
 Please contact the following before cloning or in case of interest in the project.
 
-- Selin Ersoy (lead author): selin.ersoy@nioz.nl
+Pratik Gupte (author and maintainer)  
+[PhD student, GELIFES -- University of Groningen](https://www.rug.nl/staff/p.r.gupte)  
+Guest researcher, COS -- NIOZ  
+p.r.gupte@rug.nl  
+Nijenborgh 7/5172.0583 9747AG Groningen
 
-- Pratik Gupte (author and maintainer)
-  - [PhD student, GELIFES -- University of Groningen](https://www.rug.nl/staff/p.r.gupte)
-  - Guest researcher, COS -- NIOZ
-  - p.r.gupte@rug.nl
-  - Nijenborgh 7/5172.0583 9747AG Groningen
-
-- Allert Bijleveld (PI): allert.bijleveld@nioz.nl
-  - Project information: https://www.nioz.nl/en/about/cos/coastal-movement-ecology/shorebird-tracking
+Allert Bijleveld (PI): allert.bijleveld@nioz.nl  
+Project information: https://www.nioz.nl/en/about/cos/coastal-movement-ecology/shorebird-tracking
 
 Contact PI Allert for data access.
