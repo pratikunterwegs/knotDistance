@@ -287,8 +287,9 @@ data <- group_by(data, tag, tide_number) %>%
     df <- mutate(df, sld = sld/(as.numeric(diff(time))))
     return(df)
   })
-data <- bind_rows(data) %>% 
-  sample_frac(0.01)
+data <- bind_rows(data)
+
+data <- filter(data, tag %in% c(435, 437), tide_number %in% c(19:24))
 
 # read tide wise speed summary and add prop fixes to data
 speed_summary <- fread("data/mod_output/speed_estimates_2018.csv")
